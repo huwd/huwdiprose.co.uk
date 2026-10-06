@@ -44,7 +44,7 @@ class ABSClient
   # Returns all library items with progress > 0 and isFinished = false.
   def in_progress
     uri = URI("#{@base}/api/me/items-in-progress")
-    res = Net::HTTP.start(uri.host, uri.port) do |http|
+    res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") do |http|
       req = Net::HTTP::Get.new(uri)
       req["Authorization"] = "Bearer #{@token}"
       http.request(req)
@@ -138,7 +138,7 @@ class ABSClient
   end
 
   def get(uri)
-    res = Net::HTTP.start(uri.host, uri.port) do |http|
+    res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") do |http|
       req = Net::HTTP::Get.new(uri)
       req["Authorization"] = "Bearer #{@token}"
       http.request(req)
@@ -151,7 +151,7 @@ class ABSClient
     uri = URI("#{@base}/api/libraries/#{@lib_id}/search")
     uri.query = URI.encode_www_form(q: query, limit: limit)
 
-    res = Net::HTTP.start(uri.host, uri.port) do |http|
+    res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") do |http|
       req = Net::HTTP::Get.new(uri)
       req["Authorization"] = "Bearer #{@token}"
       http.request(req)
@@ -195,7 +195,7 @@ class ABSClient
 
   def fetch_progress(item_id)
     uri = URI("#{@base}/api/me/progress/#{item_id}")
-    res = Net::HTTP.start(uri.host, uri.port) do |http|
+    res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") do |http|
       req = Net::HTTP::Get.new(uri)
       req["Authorization"] = "Bearer #{@token}"
       http.request(req)
