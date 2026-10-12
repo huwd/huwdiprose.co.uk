@@ -20,4 +20,10 @@
     libyaml
     pkg-config
   ];
+
+  # Disable the Dotenv integration hint,
+  # I'm kind of persuaded by the deprecation warning
+  # that is listed here: https://devenv.sh/integrations/dotenv/
+  # will check out SecretSpec instead: https://devenv.sh/integrations/secretspec/
+  dotenv.disableHint = true;
 }
