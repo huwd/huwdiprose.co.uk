@@ -3,7 +3,7 @@ layout: book
 title: Hyperpolitics
 authors:
 - Anton Jäger
-work_iri: https://www.wikidata.org/wiki/Q
+work_iri: https://www.wikidata.org/wiki/Q123197203
 edition_iri: https://www.wikidata.org/wiki/Q
 categories: book
 version: 1.0.0
