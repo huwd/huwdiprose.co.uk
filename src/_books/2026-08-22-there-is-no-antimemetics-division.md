@@ -3,7 +3,7 @@ layout: book
 title: There Is No Antimemetics Division
 authors:
   - Qntm
-work_iri: https://www.wikidata.org/wiki/Q
+work_iri: https://www.wikidata.org/wiki/Q138634286
 edition_iri: https://www.wikidata.org/wiki/Q
 categories: book
 version: 1.0.1

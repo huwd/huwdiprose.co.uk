@@ -3,7 +3,7 @@ layout: book
 title: "The Deluge: The Great War, America and the Remaking of the Global Order, 1916-1931"
 authors:
   - Adam Tooze
-work_iri: https://www.wikidata.org/wiki/Q
+work_iri: https://www.wikidata.org/wiki/Q60749018
 edition_iri: https://www.wikidata.org/wiki/Q
 categories: book
 version: 1.0.0

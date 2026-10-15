@@ -3,7 +3,7 @@ layout: book
 title: 'The Wages of Destruction: The Making and Breaking of the Nazi Economy'
 authors:
 - Adam Tooze
-work_iri: https://www.wikidata.org/wiki/Q
+work_iri: https://www.wikidata.org/wiki/Q7773186
 edition_iri: https://www.wikidata.org/wiki/Q
 categories: book
 version: 1.0.0

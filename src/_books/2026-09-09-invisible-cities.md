@@ -3,7 +3,7 @@ layout: book
 title: Invisible Cities
 authors:
 - Italo Calvino
-work_iri: https://www.wikidata.org/wiki/Q
+work_iri: https://www.wikidata.org/wiki/Q1219705
 edition_iri: https://www.wikidata.org/wiki/Q
 categories: book
 version: 1.0.0
