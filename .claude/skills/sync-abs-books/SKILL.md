@@ -145,7 +145,7 @@ Return the PR URL. Do not push or open a PR without explicit confirmation.
 
 ## Notes
 
-- Requires `ABS_URL`, `ABS_TOKEN_FILE`, `ABS_LIBRARY_ID` in `.env`
+- Requires `AUDIOBOOKSTORE_HOST_LAN`, `ABS_TOKEN_FILE`, `AUDIOBOOKSTORE_LIBRARY_ID` in `.env`
   (`scripts/support/helpers.rb` loads dotenv automatically).
 - `work_iri`/`edition_iri` are written as placeholder `https://www.wikidata.org/wiki/Q`
   — backfilling those is a separate step, covered by the `wikidata-books` skill.

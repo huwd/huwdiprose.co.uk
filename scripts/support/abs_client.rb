@@ -37,8 +37,8 @@ class ABSClient
   def initialize
     # ABS_TOKEN_FILE env var contains the JWT directly (not a file path — naming quirk)
     @token   = ENV.fetch("ABS_TOKEN_FILE")
-    @base    = ENV.fetch("ABS_URL")
-    @lib_id  = ENV.fetch("ABS_LIBRARY_ID")
+    @base    = ENV.fetch("AUDIOBOOKSTORE_HOST_LAN")
+    @lib_id  = ENV.fetch("AUDIOBOOKSTORE_LIBRARY_ID")
   end
 
   # Returns all library items with progress > 0 and isFinished = false.
