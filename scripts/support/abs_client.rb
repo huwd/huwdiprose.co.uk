@@ -35,8 +35,8 @@ ABSFinishedItem = Struct.new(
 
 class ABSClient
   def initialize
-    # ABS_TOKEN_FILE env var contains the JWT directly (not a file path — naming quirk)
-    @token   = ENV.fetch("ABS_TOKEN_FILE")
+    # AUDIOBOOKSTORE_JWT_TOKEN env var contains the Audiobookshelf API JWT
+    @token   = ENV.fetch("AUDIOBOOKSTORE_JWT_TOKEN")
     @base    = ENV.fetch("AUDIOBOOKSTORE_HOST_LAN")
     @lib_id  = ENV.fetch("AUDIOBOOKSTORE_LIBRARY_ID")
   end
