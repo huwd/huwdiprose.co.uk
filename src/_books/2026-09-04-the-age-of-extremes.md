@@ -9,6 +9,8 @@ categories: book
 version: 1.0.0
 series: 'The Short 20th Century #1'
 date_started: '2026-09-04T15:43:27Z'
+rating: 3
+date_finished: '2026-10-21T00:12:31Z'
 format:
   asin: '0349144168'
   narrators:
