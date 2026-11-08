@@ -28,7 +28,7 @@ I really enjoyed Station Eleven, I bought Exit Party soon after finishing it.
 
 And then... I didn't start it, it kept slipping down my list until a chat with a friend bumped it back up.
 
-I heard a contemporary US civil war was an element and expected it to be the whole. Feared another example of folks working through the political polarisation of the current '20s. Perhaps mostly, feared it'd be a crass "wake up people", line. Trying to shock folks out of complacency. "Imagine it can happen here".
+I heard a contemporary US civil war was an element and expected it to be the whole. Feared another example of folks working through the political polarisation of the current '20s. Perhaps mostly, feared it'd be a crass "wake up people" line. Trying to shock folks out of complacency. "Imagine it can happen here".
 
 In 2014 [Save the Children did an advert](https://youtu.be/RBQ-IoHfimQ) which mobilised the idea to great and shocking effect. Though there to build empathy for elsewhere rather than real fear for "here". I still think about it.
 
