@@ -13,7 +13,7 @@ date_started: '2026-08-30T17:48:04Z'
 rating: 3
 date_finished: '2026-09-23T13:08:05Z'
 format:
-  asin: B0CK4ZDTKT
+  asin: B0CK4ZBQYQ
   narrators:
   - Traci Kato-Kiriyama
   runtime: 9 hours and 8 minutes
@@ -27,9 +27,9 @@ The LRB recently ran Colin Burrow's review of Helen Vendler's last essays, "[Goo
 >[Helen] believed literary criticism was about the pleasure of describing complex things and conveying the joy of understanding them to others. 
 
 I enjoy literature, but I don't think I am very fluent in it.
-That is to say, I've not read enough nor internalised it to have strong mental models of these complex things. I can understand books in a fairly immediate way, and enjoy their ideas, stories and narratives.
+That is to say, I've neither read nor internalised enough of it to have strong mental models of these complex things. I can understand books in a fairly immediate way, and enjoy their ideas, stories and narratives.
 
-I'm aware there are deeper layers, artistry, careful planning - the ability to hide a complex thing as something simple. I think in all the best books I read I'm barely conscious enough of them to spot them.
+I'm aware there are deeper layers, artistry, careful planning - the ability to hide a complex thing as something simple. I think in all the best books I read, I'm barely conscious of them, let alone able to spot them.
 
 Which makes me a bit suspicious when a book feels... "literary".
 It feels like I've spotted the complex thing, but without really being able to explain what it is, what it's doing or why.
