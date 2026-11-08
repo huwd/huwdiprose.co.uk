@@ -32,9 +32,9 @@ One that has little time for democracy, believes it knows better than voters. It
 
 It makes a bogeyman out of a state that could limit the freedoms of these men to do as they will, while drawing significant revenue from state contracts. It seeks to crack up the global order, creating new jurisdictions and spaces to operate in.
 
-That has a faith in technology to bring this all about, viewing it as a tool to ideally replace but practically suppress and influence politics. 
+It has a faith in technology to bring this all about, viewing it as a tool to ideally replace but practically suppress and influence politics.
 
-It sees an organised, recently heavily empowered and activist vanguard, comprised mostly of incredibly wealthy Tech CEOs, nerds.
+It sees an organised, recently heavily empowered and activist vanguard, made up mostly of incredibly wealthy tech investors and CEOs: nerds.
 
 To me, this amounts to a project that cannot be seen as anything other than extremely right wing, especially by European standards.
 
