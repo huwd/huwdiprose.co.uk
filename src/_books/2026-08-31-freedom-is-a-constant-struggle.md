@@ -5,7 +5,8 @@ authors:
 - Angela Y. Davis
 work_iri: https://www.wikidata.org/wiki/Q
 edition_iri: https://www.wikidata.org/wiki/Q
-categories: book
+categories: review book
+date: 2026-11-08
 version: 1.0.0
 date_started: '2026-08-31T09:51:22Z'
 rating: 5
