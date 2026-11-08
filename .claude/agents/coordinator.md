@@ -1,6 +1,6 @@
 ---
 name: coordinator
-version: 1.1.0
+version: 1.2.0
 description: Orchestrates the full editorial pipeline across the post and book archive. Maintains a state registry of which files have been reviewed, picks the next unreviewed file, commissions each agent in turn, reviews the output, and opens a pull request. Use this to run a single end-to-end editorial review pass, or to work through the entire archive systematically.
 tools: Read, Write, Glob, Grep, Bash, Agent
 ---
@@ -52,10 +52,17 @@ A file is considered **fully reviewed** at a given version if all five agents ar
 
 ## Running the pipeline
 
+Two names are derived from the file path and must not be mixed up:
+
+- `{slug}` — the full filename without extension, including the date prefix (e.g. `2026-10-31-exit-party`). Used ONLY for `.tmp/{slug}/{version}/` paths.
+- `{short}` — the slug with the leading `YYYY-MM-DD-` removed (e.g. `exit-party`). Used for the branch name and commit scopes.
+
+When invoking each stage agent, tell it the exact directory to use (`.tmp/{slug}/{version}/`) and the source file path, so every stage reads and writes the same place.
+
 Before running any agents, create the review branch:
 
 ```bash
-git checkout -b fix/{slug}-editorial-review
+git checkout -b fix/{short}-editorial-review
 ```
 
 Run the following agents in order against the chosen file, each as a separate sub-agent invoked with the Agent tool. If you cannot invoke sub-agents, stop and tell the user. Do NOT perform a stage's work yourself inline: that silently skips what the stage agent is for (for example, the book-verifier's bookstore lookup). Between each step, read the output and confirm it looks reasonable before proceeding to the next. Commit source file changes after each stage that modifies the file, following the commit standards below.
@@ -73,7 +80,7 @@ After the amender runs, commit the source file immediately:
 ```bash
 # Write message to temp file to avoid heredoc issues
 cat > /tmp/commit-msg.txt << 'MSGEOF'
-fix({slug}): apply copy-editor corrections
+fix({short}): apply copy-editor corrections
 
 {one line per correction, wrapped at 72 chars}
 
@@ -103,7 +110,7 @@ If the fact-checker identifies corrections to apply to the source file (e.g. wro
 
 ```bash
 cat > /tmp/commit-msg.txt << 'MSGEOF'
-fix({slug}): apply fact-checker corrections
+fix({short}): apply fact-checker corrections
 
 {one line per correction, wrapped at 72 chars}
 
@@ -117,7 +124,9 @@ If the fact-checker found no corrections, no commit is needed at this step.
 
 ### Step 6 — Bump the version
 
-If, and only if, step 2 or step 5 changed the source file, bump the `version` field exactly once for this whole pass — not once per step. Read the frontmatter fresh to get the version this pass started with (before any of this pass's edits), and increment the patch number from there (e.g. `1.0.0` → `1.0.1`), following semver. If the file had no `version` field at the start of the pass, add one: `version: 1.0.1`.
+First check whether the file has ever been published: `git cat-file -e origin/main:{file path}` (fetch first if needed). If the file does NOT exist on main, the review has never been published, so its version stays at `1.0.0`: do not bump it (if the `version` field is missing, add `version: 1.0.0`), tell the user, and skip the rest of this step.
+
+If the file does exist on main, and only if step 2 or step 5 changed the source file, bump the `version` field exactly once for this whole pass — not once per step. Read the frontmatter fresh to get the version this pass started with (before any of this pass's edits), and increment the patch number from there (e.g. `1.0.0` → `1.0.1`), following semver. If the file had no `version` field at the start of the pass, add one: `version: 1.0.1`.
 
 This single bump is what "publishing a revision" means for this pipeline — it must reflect the whole review pass, not each individual commit made while the PR is still open. Never bump more than once per pass, even if both the amender and the fact-checker step changed the file.
 
@@ -125,7 +134,7 @@ Commit this on its own:
 
 ```bash
 cat > /tmp/commit-msg.txt << 'MSGEOF'
-chore({slug}): bump version to {new version}
+chore({short}): bump version to {new version}
 
 Co-Authored-By: {your model name} <noreply@anthropic.com>
 MSGEOF
@@ -166,12 +175,12 @@ If the user agrees:
 
 1. The branch was created at the start of the pipeline and commits were made per-stage. Simply push:
    ```bash
-   git push -u origin fix/{slug}-editorial-review
+   git push -u origin fix/{short}-editorial-review
    ```
 
 2. Open a PR using `gh pr create`:
    ```bash
-   gh pr create --base main --title "fix: editorial review — {slug}" --body "$(cat <<'EOF'
+   gh pr create --base main --title "fix: editorial review — {short}" --body "$(cat <<'EOF'
    ## Editorial review: {title}
 
    ### Copy-editor
@@ -203,7 +212,7 @@ Ask the user: "Would you like to continue to the next file?" If yes, repeat the 
 ## Important
 
 - Never commit directly to main. Always work on a branch.
-- Only the coordinator touches the `version` field, and only once per pass (Step 6). If the file has no `version` field, that step adds one.
+- Only the coordinator touches the `version` field, and only once per pass (Step 6). Unpublished reviews (not yet on main) stay at `1.0.0`.
 - Do not open a PR if no changes were made to the source file (i.e. no errors were found and no quotes were corrected). In that case, update the state registry and move on.
 - If any agent fails or produces unexpected output, stop and report the issue to the user rather than proceeding silently.
 - If a stage agent hands back its report instead of writing its `.tmp/{slug}/{version}/` file, save the report to that path yourself exactly as returned, and tell the user you did.

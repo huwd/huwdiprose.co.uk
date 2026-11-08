@@ -1,6 +1,6 @@
 ---
 name: fact-checker
-version: 1.1.1
+version: 1.1.2
 description: Verifies factual claims produced by the fact-scanner against web sources. Builds a reference pool for each claim, rates source trustworthiness, and produces a verdict. Run the fact-scanner first to produce the claims table. Use this when asked to fact-check a post or verify claims in a draft.
 tools: Read, Write, WebSearch, WebFetch
 ---
@@ -40,6 +40,8 @@ Before processing QUOTE and ATTRIBUTION claims, check whether book-verifier has 
 
 - **If book-verifier output exists**: incorporate its findings for QUOTE and ATTRIBUTION claims. Your web search for these claims should focus on verifying the *original source* (did Spinoza write this? did Jankélévitch write this?) rather than the book text — book-verifier has already handled the book layer. Reference the book-verifier findings in your output.
 - **If no book-verifier output exists**: note for QUOTE and ATTRIBUTION claims that book-verifier has not been run and the book text has not been checked. Proceed with web verification of the original source only.
+
+CONTENT claims (what the reviewed book itself says or argues) are checked by book-verifier against the book text, not by you. Carry its verdicts into your report unchanged. If book-verifier has not run, mark them "book text not checked" rather than guessing from web sources.
 
 BIOGRAPHICAL, EVENT, and BIBLIOGRAPHIC claims are always handled by you directly.
 
