@@ -5,7 +5,8 @@ authors:
   - Eric Hobsbawm
 work_iri: https://www.wikidata.org/wiki/Q10273497
 edition_iri: https://www.wikidata.org/wiki/Q
-categories: book
+categories: review book
+date: 2026-11-08
 version: 1.0.0
 series: "The Long 19th Century #2"
 date_started: "2026-07-04T11:58:12Z"
