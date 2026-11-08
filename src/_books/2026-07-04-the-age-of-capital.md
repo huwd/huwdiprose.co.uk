@@ -61,7 +61,7 @@ A group who "believed in the career open to enterprise and talent, and that thei
 
 They strode forth with meritocratic zeal and self congratulation, in an era of spreading technical expertise. As "the educational system became increasingly crucial to industrial development" giving a sense of propulsion forward through the sciences.
 
-Crucially though Hobsbawm notes that this is more meritocratic myth than reality. The firms that rose to this pinnacle were not founded on technical know-how, but were based were those who crew on the finance of small princelings.
+Crucially though Hobsbawm notes that this is more meritocratic myth than reality. The firms that rose to this pinnacle were not founded on technical know-how, but were based were those who grew on the finance of small princelings.
 
 > The careers of the bourgeois world were indeed open to talent, but the family with a modest amount of education, property and social connections among others of the middle rank undoubtedly started with a relatively enormous advantage.
 
