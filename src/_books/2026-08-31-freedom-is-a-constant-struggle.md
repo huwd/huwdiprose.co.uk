@@ -36,23 +36,25 @@ An insistence that the will and power here is founded in grouping, more than our
 
 > It is in collectivities that we find reservoirs of hope and optimism
 
-with the result:
+On keeping going:
 
-> It's trying. Trying and trying again. Never stopping. That is a victory in itself
+> Optimism is an absolute necessity, even if it's only optimism of the will
+
+or as Barat frames it in the intro: "It's trying. Trying and trying again. Never stopping. That is a victory in itself."
 
 In many ways the thesis seems to agree with the hyperpolitics thesis of contemporary atomisation undermining pressure for change.
 
 However there's perhaps more optimism here.
 I can't help but feel that here we have a woman who has faced a share of _struggle_ that would have melted all but the most resilient.
-Yet speaks lovingly of comrades and fellows along the way.
-She must have found communities to sustain her, and that must underpin the solidarity she shows to others in these lectures.
+Yet speaks warmly and persistently of comrades and fellows along the way.
+She must have found communities to sustain her, and that must underpin the solidarity she shows to others in these talks and interviews.
 
 Her advice to contemporary activists seems to be to try and find ways to reverse or transcend the hyperpolitics curse.
 And not to be waylaid by other promises,
 
 Of the political _saviour_ we may vote for:
 
-> What we have lacked over these last five years is not the right president, but rather well-organized mass movements.
+> What we have lacked over these last five years [of Obama] is not the right president, but rather well-organized mass movements.
 
 to just reform movements by their long run outcomes:
 
@@ -62,7 +64,13 @@ and a feeling that a technical fix can supplant political success:
 
 > The problem is that it is often assumed that the eradication of the legal apparatus is equivalent to the abolition of racism.
 
-Instead she would centre coming together, solidarity in common struggles and a return to something that sounds like the mass politics of the mid 20th.
+Instead she would centre coming together, solidarity in common struggles and something of the collectivity that was present in previous mass movements.
+
+> Every change that has happened has come as a result of mass movements... I don't see why things would be any different today.
+
+On the legislation of the sixties and seventies:
+
+> [That] did not happen as a result of a president taking extraordinary steps. It happened as a result of people marching and organizing.
 
 > We cannot go on as usual. We cannot pivot the center. We cannot be moderate.
 
