@@ -17,3 +17,16 @@ format:
   type: Audiobook
 ---
 
+A man speaks to an emperor about places that exist, or perhaps do not, or only inKublai Khan's imagination, or only _because_ the Khan imagines them.
+
+Or perhaps they're all just Venice?
+
+A dreamy book, I find difficult to fully recall even soon after finishing it.
+Cities are passed through quickly, vividly described, tangible, and then left behind with the same speed.
+
+A short book, I could and probably will read it again some day.
+
+In the moment of reading it feels coherent, flows well and makes sense in it's own terms.
+
+Afterwards, i feel like awaking from an intense dream.
+A strong impression left, with both details and meaning melting when I reach for it.
