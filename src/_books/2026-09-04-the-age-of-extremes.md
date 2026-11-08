@@ -6,7 +6,7 @@ authors:
 work_iri: https://www.wikidata.org/wiki/Q1368077
 edition_iri: https://www.wikidata.org/wiki/Q
 categories: review book
-date: 2026-10-21
+date: 2026-11-08
 version: 1.0.0
 series: 'The Short 20th Century #1'
 date_started: '2026-09-04T15:43:27Z'
