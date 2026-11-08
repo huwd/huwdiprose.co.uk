@@ -5,7 +5,8 @@ authors:
 - Robin Wigglesworth
 work_iri: https://www.wikidata.org/wiki/Q
 edition_iri: https://www.wikidata.org/wiki/Q
-categories: book
+categories: review book
+date: 2026-10-31
 version: 1.0.0
 date_started: '2026-10-23T12:52:13Z'
 rating: 3
