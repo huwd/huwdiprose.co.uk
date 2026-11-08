@@ -13,7 +13,7 @@ rating: 3
 date_finished: '2026-09-24T23:17:35Z'
 format:
   narrators:
-  - Ben Owen
+  - Richard Higgins
   runtime: 2 hours and 53 minutes
   type: Audiobook
 ---
