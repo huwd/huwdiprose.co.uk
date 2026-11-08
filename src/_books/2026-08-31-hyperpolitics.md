@@ -1,6 +1,7 @@
 ---
 layout: book
 title: Hyperpolitics
+subtitle: Extreme Politicization Without Political Consequences
 authors:
 - Anton Jäger
 work_iri: https://www.wikidata.org/wiki/Q123197203
@@ -26,11 +27,11 @@ Part of writing these reviews is an attempt to make the things I read stick.
 I have felt the thrill of receiving an electrifying thought, having my brain swim with the implications, light up connections to a range of ideas.
 
 This education, however, can be fleeting.
-Looking back over the things I've read, how much remains? How many lines might be discarded in the way to a point? But sometimes the point, too, is lost.
+Looking back over the things I've read, how much remains? How many lines might be discarded on the way to a point? But sometimes the point, too, is lost.
 
 There are things I know I liked when I read, saw or listened to them, but couldn't now tell you what or why.
 
-Instead I find, a vibe, left. An emotional imprint. I like that, but I can no longer clearly tell you why.
+Instead, I find a vibe left. An emotional imprint. I like that, but I can no longer clearly tell you why.
 
 It didn't stick.
 But, at the time it was deeply felt.
