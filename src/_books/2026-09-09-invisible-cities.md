@@ -6,7 +6,7 @@ authors:
 work_iri: https://www.wikidata.org/wiki/Q1219705
 edition_iri: https://www.wikidata.org/wiki/Q
 categories: review book
-date: 2026-09-24
+date: 2026-11-08
 version: 1.0.0
 date_started: '2026-09-09T06:15:34Z'
 rating: 3
