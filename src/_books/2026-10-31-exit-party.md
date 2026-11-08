@@ -38,6 +38,6 @@ I need not have worried. The backdrop is there, and there are things to be said 
 
 The characters become real, their decisions have fidelity. They may surprise but they're faithful to the people described.
 
-A strong theme is the question of what is intrinsic or incidental in choices we make? What's in a person, what's environmental? The results are stark because we choose some fairly dramatic environments.
+A strong theme is the question of what is intrinsic or incidental in choices we make: what's in a person, what's environmental? The results are stark because we choose some fairly dramatic environments.
 
 I enjoyed it, even the odd, slightly disjointed structure. I'd recommend it to many, especially if you liked Station Eleven.
