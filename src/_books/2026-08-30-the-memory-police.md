@@ -22,12 +22,12 @@ format:
   type: Audiobook
 ---
 
-The LRB recently ran a conversation on "[What's the point of literary criticism](https://www.lrb.co.uk/the-paper/v48/n16/colin-burrow/good-weird-or-bad-weird)", in honour of Helen Vendler. A line stood out to me:
+The LRB recently ran Colin Burrow's review of Helen Vendler's last essays, "[Good Weird or Bad Weird](https://www.lrb.co.uk/the-paper/v48/n16/colin-burrow/good-weird-or-bad-weird)", which opens by asking what the point of literary criticism is. A line about Vendler stood out to me:
 
 >[Helen] believed literary criticism was about the pleasure of describing complex things and conveying the joy of understanding them to others. 
 
 I enjoy literature, but I don't think I am very fluent in it.
-That is to say, I've not read enough nor internalised it to have strong mental models of these complex things. I can understand books in a fairly imminent way, and enjoy their ideas, stories and narratives.
+That is to say, I've not read enough nor internalised it to have strong mental models of these complex things. I can understand books in a fairly immediate way, and enjoy their ideas, stories and narratives.
 
 I'm aware there are deeper layers, artistry, careful planning - the ability to hide a complex thing as something simple. I think in all the best books I read I'm barely conscious enough of them to spot them.
 
@@ -36,7 +36,8 @@ It feels like I've spotted the complex thing, but without really being able to e
 
 This book felt like that.
 Not bad, but a bit odd. Slow, but very self confident in its own telling.
-Like I was supposed to appreciate this complexity as both as story and literature worthy of study.
+As if I was supposed to appreciate both the story and its complexity.
+It felt written like something I might have studied at school.
 
 But I didn't like the story very much, though it intrigued me for a good distance.
 I am not sufficiently literate to understand the complexity, nor convey it to others.
