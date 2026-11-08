@@ -5,7 +5,8 @@ authors:
 - Anton Jäger
 work_iri: https://www.wikidata.org/wiki/Q123197203
 edition_iri: https://www.wikidata.org/wiki/Q
-categories: book
+categories: review book
+date: 2026-09-04
 version: 1.0.0
 date_started: '2026-08-31T22:30:02Z'
 rating: 5
