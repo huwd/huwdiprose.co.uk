@@ -3,7 +3,6 @@ layout: book
 title: The Memory Police
 authors:
 - Yoko Ogawa
-- Stephen Snyder - translator
 work_iri: https://www.wikidata.org/wiki/Q85721227
 edition_iri: https://www.wikidata.org/wiki/Q
 categories: review book

@@ -47,4 +47,4 @@ I once hoped the internet would provide a venue. But that optimism is long past 
 
 I write these things as a partial remedy. I expect no connection, no common cause, I neither know nor care if anyone reads this. But there is a discipline or rehearsal that matters to me - in the hopes I will retain more until I get a chance to discuss an idea with someone else.
 
-I think the point of Jäger's book, is that politically the venues for that diminish, and explain a lot about our emotionally unstable, volitile and unretentive world.
+I think the point of Jäger's book, is that politically the venues for that diminish, and explain a lot about our emotionally unstable, volatile and unretentive world.
