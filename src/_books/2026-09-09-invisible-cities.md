@@ -8,6 +8,8 @@ edition_iri: https://www.wikidata.org/wiki/Q
 categories: review book
 date: 2026-11-08
 version: 1.0.0
+redirect_from:
+  - /review/book/2026/09/24/invisible-cities/
 date_started: '2026-09-09T06:15:34Z'
 rating: 3
 date_finished: '2026-09-24T23:17:35Z'

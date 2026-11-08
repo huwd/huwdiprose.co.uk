@@ -9,6 +9,8 @@ edition_iri: https://www.wikidata.org/wiki/Q
 categories: review book
 date: 2026-11-08
 version: 1.0.0
+redirect_from:
+  - /review/book/2026/10/31/a-fabulous-debt/
 date_started: '2026-10-23T12:52:13Z'
 rating: 3
 date_finished: '2026-10-31T12:55:24Z'

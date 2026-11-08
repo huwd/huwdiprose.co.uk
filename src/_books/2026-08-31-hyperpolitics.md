@@ -9,6 +9,8 @@ edition_iri: https://www.wikidata.org/wiki/Q
 categories: review book
 date: 2026-11-08
 version: 1.0.0
+redirect_from:
+  - /review/book/2026/09/04/hyperpolitics/
 date_started: '2026-08-31T22:30:02Z'
 rating: 5
 date_finished: '2026-09-04T15:15:26Z'
