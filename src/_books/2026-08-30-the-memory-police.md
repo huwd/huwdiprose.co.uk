@@ -35,11 +35,11 @@ Which makes me a bit suspicious when a book feels... "literary".
 It feels like I've spotted the complex thing, but without really being able to explain what it is, what it's doing or why.
 
 This book felt like that.
-Not bad, but a bit odd. Slow, but very self confident in it's own telling.
+Not bad, but a bit odd. Slow, but very self confident in its own telling.
 Like I was supposed to appreciate this complexity as both as story and literature worthy of study.
 
-But I didn't like the story very much, though it intruged me for a good distance.
+But I didn't like the story very much, though it intrigued me for a good distance.
 I am not sufficiently literate to understand the complexity, nor convey it to others.
 
 So am left wondering what it is I cannot see and why.
-Or if this is written as if it contains worlds below it's surface, without there actually being much there.
+Or if this is written as if it contains worlds below its surface, without there actually being much there.
