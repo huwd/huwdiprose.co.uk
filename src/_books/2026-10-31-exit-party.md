@@ -8,6 +8,8 @@ edition_iri: https://www.wikidata.org/wiki/Q
 categories: review book
 date: 2026-11-08
 version: 1.0.0
+redirect_from:
+  - /review/book/2026/11/01/exit-party/
 date_started: '2026-10-31T12:56:37Z'
 rating: 4
 date_finished: '2026-11-01T15:17:47Z'

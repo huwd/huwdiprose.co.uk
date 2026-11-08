@@ -8,6 +8,8 @@ work_iri: https://www.wikidata.org/wiki/Q141058063
 edition_iri: https://www.wikidata.org/wiki/Q
 categories: review book
 version: 1.0.0
+redirect_from:
+  - /review/book/2026/11/04/the-nerd-reich/
 date: 2026-11-08
 date_started: '2026-11-01T19:00:28Z'
 rating: 4
