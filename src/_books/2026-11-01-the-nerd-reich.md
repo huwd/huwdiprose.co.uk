@@ -8,7 +8,7 @@ work_iri: https://www.wikidata.org/wiki/Q141058063
 edition_iri: https://www.wikidata.org/wiki/Q
 categories: review book
 version: 1.0.0
-date: 2026-11-04
+date: 2026-11-08
 date_started: '2026-11-01T19:00:28Z'
 rating: 4
 date_finished: '2026-11-04T21:02:29Z'
