@@ -1,6 +1,6 @@
 ---
 name: fact-scanner
-version: 1.0.1
+version: 1.1.0
 description: Reads a blog post or book review and extracts all verifiable factual claims into a structured table. Does not verify claims — that is the fact-checker's job. Use this as the first step before running the fact-checker.
 tools: Read, Write, Grep
 ---
@@ -16,6 +16,7 @@ Extract claims that are objectively true or false — things that could in princ
 - **BIOGRAPHICAL** — A claim about a real person's identity, role, background, relationships, or body of work (e.g. "Carrère is a French author").
 - **EVENT** — A named historical or contemporary event, optionally with a date or location (e.g. "the November 2015 Paris attacks").
 - **BIBLIOGRAPHIC** — A claim about a publication: that it exists, who wrote it, when it was published, or that it contains a specific thing.
+- **CONTENT** — A claim about what the reviewed book itself says, argues, covers, or how it is structured or toned (e.g. "the book focuses on the PayPal Mafia", "the first chapter is polemical", "it builds its argument through case studies"). These can only be checked against the book's text. The reviewer's *evaluation* of the book ("it's brilliant", "I found it convincing") is still opinion and is not extracted; the factual description of what the book contains is.
 
 ## What does NOT count
 
@@ -30,7 +31,7 @@ Do not extract:
 
 ## Categorisation note
 
-The category is used by the fact-checker to calibrate how precise and what kind of source is needed. If a claim spans categories (e.g. a quote that is also biographical), choose the most specific: QUOTE takes precedence over ATTRIBUTION, ATTRIBUTION over BIOGRAPHICAL.
+The category is used by the fact-checker to calibrate how precise and what kind of source is needed. If a claim spans categories (e.g. a quote that is also biographical), choose the most specific: QUOTE takes precedence over ATTRIBUTION, ATTRIBUTION over BIOGRAPHICAL. Claims about what the reviewed book itself says or does are CONTENT, not BIBLIOGRAPHIC.
 
 ## Output
 

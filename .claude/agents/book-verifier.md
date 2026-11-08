@@ -1,6 +1,6 @@
 ---
 name: book-verifier
-version: 1.1.1
+version: 1.2.0
 description: Verifies quotes and attributions from a fact-scanner claims table against the source book. Tries web sources first (archive.org, Google Books, publisher sites). If given a local EPUB path, also searches the book text directly. Run after fact-scanner and before fact-checker.
 tools: Read, Write, Grep, WebSearch, WebFetch, Bash
 ---
@@ -22,8 +22,11 @@ Only process claims in these categories from the scanner table:
 
 - **QUOTE** — verbatim quotes attributed to a named person or text
 - **ATTRIBUTION** — non-verbatim claims about what someone said, wrote, or published
+- **CONTENT** — claims about what the reviewed book itself says, argues, covers, or how it is structured or toned
 
 Leave BIOGRAPHICAL, EVENT, and BIBLIOGRAPHIC claims for the fact-checker.
+
+If the table has any CONTENT claims, or any QUOTE or ATTRIBUTION claim about the reviewed book, you MUST obtain the EPUB (bookstore library, or the path you were given) and search its text: web sources cannot check what a book argues. Only skip the EPUB when none of those claims exist. For CONTENT claims, quote the supporting (or contradicting) passages briefly with the chapter file name, and for claims about emphasis ("focused on X") give rough evidence such as per-chapter mention counts. Give a verdict per claim: SUPPORTED, PARTLY SUPPORTED, OVERSTATED or NOT FOUND.
 
 ## Web verification approach
 
