@@ -83,64 +83,65 @@ He remarks "Its very existence as a class of masters was undermined by the trans
 The second theme fizzed with more potential, a parallel shift which ran through politics.
 As the corporation replaces the owner, the party replaces the local notable.
 
-> After 1870 it became increasingly clear that the democratization of the politics of states was quite inevitable. The masses would march on to the stage of politics, whether rulers liked it or not.
+> Yet after 1870 it became increasingly clear that the democratization of the politics of states was quite inevitable. The masses would march on to the stage of politics, whether rulers liked it or not.
 
-If the bourgeoisie rose over a century and declined within one more, the masses seem to run the same course in a few decades: swift to organise, and then absorbed by the system they had set out to overturn.
+If the bourgeoisie rose over most of a century and declined within a generation or two, the masses seem to run the same course in a few decades: swift to organise, and then absorbed by the system they had set out to overturn.
 
 Mass parties of the organised working class grew "suddenly and with extraordinary speed", they barely existed in 1880 but by 1906 were taken for granted as a fact of life.
 
-They emerged out of earlier precedents, Labour Unions gaining legal status in 1867 and 1875 and Marx's international running through the late 60s until early 1870s.
+They emerged out of earlier precedents, British unions winning legal status between 1867 and 1875, and Marx's International of 1864–72.
 
-They may be better described as masses, several groups, a working class "very far from being a homogeneous", a lower middle class, a rural peasantry, religious and nationalist blocs. As newly mobilized blocks they were held together by "religion, nationalism, democracy, socialism, the precursor ideologies of inter-war fascism".
+They may be better described as masses, several groups, a working class "very far from being a homogeneous mass", a lower middle class, a rural peasantry, religious and nationalist blocs. As newly mobilized blocs they were held together by "religion, nationalism, democracy, socialism, the precursor ideologies of inter-war fascism".
 
-Their growth, especially in bursts in the early 1880s, 90s and 1905-14 saw organisation as a liberation of common cause:
+Their growth, especially in bursts around 1890 and 1905-14, saw organisation as a liberation of common cause:
 
 > Without this organized collectivity, they were only poor labouring folk
 
-Their rise was deeply unwelcome. As the British electorate "almost quadrupled", from 8 to 29 per cent of men over twenty, worries emerged that the masses would be:
+Their rise was received without enthusiasm. As the British electorate "almost quadrupled", from 8 to 29 per cent of men over twenty, worries emerged that the masses would be:
 
 > unable to understand the elegant and salutary logic of Adam Smith's free market
 
 and could pursue "a road which led to that social revolution".
 
-Strike waves and even general strikes showed these forces to be muscular powers capable of pushing back on capitalist influence. They were dominant in key strategic rail and sea transport networks.
+Strike waves and even general strikes showed these forces to be muscular powers capable of pushing back on capitalist influence. They held strategic leverage in rail and sea transport, where a strike could paralyse a national economy.
 
-Most strikingly socialist and labour parties grew to become the largest national parties in Germany and Scandinavia with 35–40 per cent of the vote. They seem to satisfy a latent appetite:
+Most strikingly socialist and labour parties grew to become the largest national parties in Germany and Scandinavia with up to 35–40 per cent of the vote. They seem to satisfy a latent appetite:
 
 > every extension of the right to vote revealed the industrial masses ready to choose socialism
 
 and with it was an explosive and revolutionary potential
 
-> Was this revolutionary? Almost certainly not in the insurrectional sense, to judge by the behaviour of the majority of the strongest of all revolutionary socialist parties, the German SPD. But there was in Europe a vast semi-circular belt of poverty and unrest in which revolution actually was on the agenda, and – at least in one part of it – actually broke out. It stretched from Spain through large parts of Italy, via the Balkan peninsula into the Russian Empire
+> Was this revolutionary? Almost certainly not in the insurrectionary sense, to judge by the behaviour of the majority of the strongest of all revolutionary socialist parties, the German SPD. But there was in Europe a vast semi-circular belt of poverty and unrest in which revolution actually was on the agenda, and – at least in one part of it – actually broke out. It stretched from Spain through large parts of Italy, via the Balkan peninsula into the Russian Empire.
 
 This meteoric rise, however, found its own "strange death" in western Europe.
 Having amassed all this leverage, these parties hesitated to use it.
 
-This strongest SPD was described by Kautsky as "a party which, while revolutionary, does not make a revolution", providing time for the old order to fight off the challenge. It absorbed and co-opted these movements away from their revolutionary roots.
+This strongest SPD was described by Kautsky as "a party which, while revolutionary, does not make a revolution". That gave the old order time to fight off the challenge, and to absorb and co-opt these movements away from their revolutionary roots.
 
-They became a new synthesis and fighting off the challenge but at a cost: "it did so – it had to do so – by turning itself into something very different from what it had been in 1914."
+But the old order mutated in the process. It fought off the challenge, but "it did so – it had to do so – by turning itself into something very different from what it had been in 1914."
 
 Meanwhile, in Western Europe the left seems to have begun its long arc of splintering whilst others outmanoeuvre it.
 
 But, as with the bourgeoisie, the move in the period was more displacement than full fall.
-Revolution did not occur where it was "supposed to". Instead, Hobsbawm describes:
+Revolution did not occur where it was expected to. Instead, Hobsbawm describes:
 
 > Revolution migrated from western to eastern Europe in our period
 
-I take this to mean Russia which certainly caps the end of the book but could also be taken to mean the Chinese CCP founded in the 1920s before walking the long march to power in 1949.
+I take this to mean Russia, which certainly caps the end of the book. The book itself stays in Europe, but the pattern could also be read to include the Chinese CCP, founded in 1921, which walked the Long March to power in 1949.
 
 The book is a dizzying cap to a tremendous series.
-A charting of the period not through the lives of the great decision makers, but the material and productive forces that shaped the possibilities and politics.
+A charting of the period more through structural forces than the lives of the great decision makers, the material and productive forces that shaped the possibilities and politics.
 
 The items that stick the most see me placing myself at various points.
 
-From the peasant of the early 1700s toiling under conditions similar for generations,
-to those who lived through the explosive dual revolutions and across 50 years saw explosion and ripples as political and industrial revolutions remade the world.
+From the peasant before 1789 toiling under conditions similar for generations,
+to those who lived through the explosive dual revolutions and across sixty years saw explosion and ripples as political and industrial revolutions remade the world.
 Artisans, small shopkeepers and workers leaving the land for manufacture, and the conditions they found there.
-The slow growth of education, into mass movements and politics.
-Despite, in response to the hardening rock that cooled from revolutionary slopes.
+The slow growth of education, into mass movements and politics, and a response to the hardening rock that cooled from revolutionary slopes.
 
-Most of all I think about the hope of some of these times, amid conditions unfathomably worse than my own. A theme Hobsbawm seems to conclude on:
+Most of all I think about the hope of some of these times, amid conditions unfathomably worse than my own. A theme Hobsbawm returns to throughout.
+
+In the chapter on the workers:
 
 > Never before had there been such an age of hope for those who laboured with their hands in factory, workshop and mine.
 
@@ -148,9 +149,17 @@ Later adding:
 
 > If they had hope – and their organized members were indeed proud and hopeful – it was because they had hope in the movement
 
-and finally:
+In the introduction, he suggests:
 
 > If public opinion pollsters in the developed world before 1914 had counted up hope against foreboding, optimists against pessimists, hope and optimism would pretty certainly have prevailed.
+
+And his conclusion draws it together:
+
+> For most men and women in the world transformed by the bourgeoisie it was almost certainly an age of hope.
+
+before turning to the present:
+
+> It is on this hope that we can now look back. We can still share it, but no longer without scepticism and uncertainty.
 
 Perhaps no wonder when such extraordinary changes at a political and material level ripped across societies in a lifetime.
 
