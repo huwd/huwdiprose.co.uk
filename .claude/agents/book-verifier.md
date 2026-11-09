@@ -59,31 +59,32 @@ Note that translations may vary — if a quote is translated, different editions
 
 Before falling back to asking the user, always attempt to retrieve the EPUB from the bookstore library.
 
-Credentials and host are in environment variables — never hardcode them:
+The endpoint and credentials are in environment variables — never hardcode them, and never write the endpoint or its path into any output, commit or PR:
 
 ```bash
-BOOKSTORE_HOST   # the OPDS root of the bookstore server, no trailing slash,
-                 # e.g. https://books.example.com/<opds-root> (it already includes the OPDS path)
+BOOKSTORE_SEARCH_URL   # the library's search endpoint; a `q` query parameter is added to it
 BOOKSTORE_USER
 BOOKSTORE_PASSWORD
 ```
 
-**Step 1 — Search OPDS for the book:**
+If `BOOKSTORE_SEARCH_URL` is not set, stop and tell the user rather than guessing an address.
+
+**Step 1 — Search the library for the book:**
 
 ```bash
 curl -s -G -u "$BOOKSTORE_USER:$BOOKSTORE_PASSWORD" \
   --data-urlencode "q={title words}" \
-  "${BOOKSTORE_HOST}/catalog"
+  "$BOOKSTORE_SEARCH_URL"
 ```
 
-The credentials are only available through `with-secrets` (e.g. `with-secrets sh -c 'curl ...'`). Never print them. If a request returns HTML (`<title>{Bookstore}</title>`) instead of Atom XML, the URL is wrong: the web app answers every path it does not recognise. `${BOOKSTORE_HOST}/` is the navigation feed and `${BOOKSTORE_HOST}/recent` lists recently added books.
+The credentials are only available through `with-secrets` (e.g. `with-secrets sh -c 'curl ...'`). Never print them. The response should be an XML feed. If a request returns an HTML page instead, the URL is wrong: stop and ask the user to check `BOOKSTORE_SEARCH_URL`.
 
 The `q` search matches words in the title, so use one or two distinctive words (e.g. `Nerd`, not the full subtitle) and check the entry's title and author yourself. Zero `<entry>` elements means the book is not in the library.
 
-Parse the XML response for an entry with:
+Look in the XML for an entry with a link whose type is the EPUB media type:
 
 ```xml
-<link rel="http://opds-spec.org/acquisition" href="..." type="application/epub+zip"/>
+<link type="application/epub+zip" href="..."/>
 ```
 
 Use the `href` from the entry exactly as given for the download; do not construct download URLs. Try distinctive title words first, then the author's surname. If neither finds the book, treat it as not in the library.
@@ -92,23 +93,19 @@ Use the `href` from the entry exactly as given for the download; do not construc
 
 ```bash
 curl -s -u "$BOOKSTORE_USER:$BOOKSTORE_PASSWORD" \
-  "{href from the acquisition link, made absolute against the server origin if it starts with /}" \
+  "{href from the link, made absolute against the origin of $BOOKSTORE_SEARCH_URL if it starts with /}" \
   -o /tmp/epub-verify/book.epub
 ```
 
-**Step 3 — Search the EPUB:**
+**Step 3 — Extract and search the text:**
 
-An EPUB is a zip archive:
+Convert the EPUB to one plain-text file per chapter, then follow "Local book text" above:
 
 ```bash
-unzip -o /tmp/epub-verify/book.epub -d /tmp/epub-verify/
-grep -r "{search_phrase}" /tmp/epub-verify/ --include="*.xhtml" --include="*.html" -l
-grep -r "{search_phrase}" /tmp/epub-verify/ --include="*.xhtml" --include="*.html" -A 3 -B 3
+ruby scripts/epub_to_text.rb /tmp/epub-verify/book.epub /tmp/epub-verify/text
 ```
 
-Use a distinctive phrase of 4–6 words from the quote. If the quote is in a non-English language or a translation, try key terms.
-
-If found: note the file and surrounding context. If not found: try variant phrasings before concluding it is absent.
+Use a distinctive phrase of 4–6 words from the quote when searching by hand. If the quote is in a non-English language or a translation, try key terms. If found: note the file and line, and the surrounding context. If not found: try variant phrasings before concluding it is absent.
 
 **Step 4 — Clean up:**
 
@@ -116,9 +113,9 @@ If found: note the file and surrounding context. If not found: try variant phras
 rm -rf /tmp/epub-verify/
 ```
 
-If the book is not found in the bookstore library (no acquisition link returned), or if no EPUB format is available, fall through to web verification. Note "not in library" in the output.
+If the book is not found in the bookstore library (no matching entry or no EPUB link), fall through to web verification. Note "not in library" in the output.
 
-If the user provides an explicit local EPUB path, use that directly at Step 3, skipping Steps 1–2. If they provide an extracted text directory, see "Local book text" above and skip this whole section.
+If the user provides an explicit local EPUB path, run only Step 3 on it, skipping Steps 1–2. If they provide an extracted text directory, see "Local book text" above and skip this whole section.
 
 ## Confidence ratings
 
