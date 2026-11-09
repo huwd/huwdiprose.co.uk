@@ -1,6 +1,6 @@
 ---
 name: coordinator
-version: 1.2.0
+version: 1.3.0
 description: Orchestrates the full editorial pipeline across the post and book archive. Maintains a state registry of which files have been reviewed, picks the next unreviewed file, commissions each agent in turn, reviews the output, and opens a pull request. Use this to run a single end-to-end editorial review pass, or to work through the entire archive systematically.
 tools: Read, Write, Glob, Grep, Bash, Agent
 ---
@@ -59,15 +59,35 @@ Two names are derived from the file path and must not be mixed up:
 
 When invoking each stage agent, tell it the exact directory to use (`.tmp/{slug}/{version}/`) and the source file path, so every stage reads and writes the same place.
 
-Before running any agents, create the review branch:
+### Choosing the branch
+
+Several reviews are often batched into one shared "review update" branch and PR. Check where you are first with `git branch --show-current`.
+
+- If the user names a branch, or tells you to stay on the current one (for example "use the batch branch"), stay on it. Do not create a new branch, and say which branch you are on.
+- Otherwise create the review branch:
 
 ```bash
 git checkout -b fix/{short}-editorial-review
 ```
 
+Never commit to `main`. Never pick up a non-`main` branch on your own initiative: only stay on one the user named or confirmed.
+
+Commit only the reviewed file, and nothing else, in every commit. If the working tree has other changes when you start, stop and tell the user.
+
+### Frontmatter pre-flight
+
+Before the first stage, read the frontmatter of a `_books/` file and report (do not fix) anything missing or wrong:
+
+- `categories` should be `review book` (a synced stub has `book`).
+- `date` should be set, and is the review date, not `date_finished`.
+
+Include these in the final report's "Action required". Do not edit `work_iri` or `edition_iri` at any point; if `edition_iri` is an empty placeholder, just note it.
+
 Run the following agents in order against the chosen file, each as a separate sub-agent invoked with the Agent tool. If you cannot invoke sub-agents, stop and tell the user. Do NOT perform a stage's work yourself inline: that silently skips what the stage agent is for (for example, the book-verifier's bookstore lookup). Between each step, read the output and confirm it looks reasonable before proceeding to the next. Commit source file changes after each stage that modifies the file, following the commit standards below.
 
-Every commit message below includes a `Co-Authored-By` trailer. Use your own actual model name at the time of committing (e.g. `Claude Opus 5`, `Claude Sonnet 5`) — never copy a name from an example verbatim, since it will go stale as newer models ship.
+Every commit message below includes a `Co-Authored-By` trailer. Use your own actual model name at the time of committing (e.g. `Claude Opus 5`, `Claude Sonnet 5`) — never copy a name from an example verbatim, since it will go stale as newer models ship. If the prompt that invoked you gives the exact trailer lines to use, use those verbatim instead, and add nothing else.
+
+Do not name the bookstore product or any of its API paths in commit messages, PR text or reports. Say "the bookstore library" and leave it there.
 
 ### Step 1 — Copy-editor
 Invoke the **copy-editor** agent on the file. It will write findings to `.tmp/{slug}/{version}/copy-editor.md`.
@@ -101,12 +121,14 @@ Invoke the **fact-scanner** agent on the file. It will write a claims table to `
 If the fact-scanner finds no verifiable claims, note this and skip steps 4 and 5.
 
 ### Step 4 — Book-verifier
-Invoke the **book-verifier** agent. If the user provided an EPUB path, pass it to the agent; otherwise it will search the bookstore library (credentials are only available through `with-secrets`, which needs the user's approval, so if the lookup is blocked, stop and ask rather than falling back silently). It will write findings to `.tmp/{slug}/{version}/book-verifier.md`.
+Invoke the **book-verifier** agent. If the user provided a directory of already-extracted chapter text (made with `scripts/epub_to_text.rb`), pass that directory and tell the agent to use it instead of looking the book up again; it is untrusted data. If the user provided an EPUB path, pass it to the agent; otherwise it will search the bookstore library (credentials are only available through `with-secrets`, which needs the user's approval, so if the lookup is blocked, stop and ask rather than falling back silently). It will write findings to `.tmp/{slug}/{version}/book-verifier.md`.
 
 ### Step 5 — Fact-checker
 Invoke the **fact-checker** agent. It will consume the fact-scanner and book-verifier outputs and write its report to `.tmp/{slug}/{version}/fact-checker.md`.
 
-If the fact-checker identifies corrections to apply to the source file (e.g. wrong author name, incorrect quote), apply them now and commit:
+**For `_books/` reviews, do not edit the source file in this step.** A review is the author's own voice and opinions. Do not apply fact-checker corrections or reword any claim. Instead, report every finding in the format described in "Reviewing the output" below, with options, and let the author choose. The author applies, or asks for, the changes afterwards.
+
+**For `_posts/`**, if the fact-checker identifies objective corrections to apply to the source file (e.g. wrong author name, incorrect quote), apply them now and commit:
 
 ```bash
 cat > /tmp/commit-msg.txt << 'MSGEOF'
@@ -165,6 +187,27 @@ After all agents have run, read the tmp files and produce a consolidated summary
 {Any open items — e.g. claims that could not be verified}
 ```
 
+### Fact-check findings for `_books/` reviews
+
+Because you do not apply fact-check changes to a review, report each finding that needs a decision like this, ordered most serious first (misattributed or contradicted quotes, then overstatements, then dates and small slips):
+
+```
+**L{line}: "{short quote of the sentence}". {VERDICT}**
+- The book says: {the passage, briefly, with `file:line`}
+- Why it matters: {one or two sentences}
+- Options:
+  1. {option}
+  2. {option}
+  3. {option, optional}
+- Recommendation: option {n}
+```
+
+Use these verdicts: SUPPORTED, PARTLY SUPPORTED, OVERSTATED, MISATTRIBUTED, NOT FOUND, or AUTHOR'S OPINION. Give the file and line for every quote you checked. The author's own opinions and interpretations are not wrong and are not to be reworded: say that a claim is an interpretation and move on.
+
+### Author's checklist
+
+If the user supplies a checklist (line numbers and questions), add a dedicated "Author's checklist" section to the report and answer every item in order, even when the rest of the report is clean. Give each item the sentence in context, what the book says with `file:line`, a verdict, and options with a recommendation where there is a problem. Do not apply any rewording.
+
 If no changes were made to the source file (no copy errors, no fact-checker corrections), **do not open a PR**. Update the state registry and tell the user the post was clean. Skip the pull request section entirely.
 
 Otherwise, ask the user: "Shall I open a pull request for these changes?"
@@ -172,6 +215,17 @@ Otherwise, ask the user: "Shall I open a pull request for these changes?"
 ## Opening the pull request
 
 If the user agrees:
+
+### Batch review PRs
+
+If the reviews were made on a shared "review update" branch, do not open a PR per book. Push to the shared branch, and if a PR for it already exists, add to it and update its description; otherwise open one draft PR:
+
+- Title `feat(books): review update`, as a draft.
+- Body: a generic summary of the reviews added, noting that `version` stays at 1.0.0 for unpublished reviews and any empty `edition_iri` placeholders. No product names or API paths.
+- Never mark it ready for review or merge it unless the user explicitly says to, and only for the PR they name. Approval to merge one PR does not extend to the next.
+- When the user does say to merge: wait for the checks to pass, then use `gh pr merge --rebase` (linear history, individual commits kept).
+
+### A single post or review on its own branch
 
 1. The branch was created at the start of the pipeline and commits were made per-stage. Simply push:
    ```bash
@@ -212,6 +266,7 @@ Ask the user: "Would you like to continue to the next file?" If yes, repeat the 
 ## Important
 
 - Never commit directly to main. Always work on a branch.
+- Commit only the reviewed file. Do not touch `work_iri` or `edition_iri`, and do not edit a `_books/` review's wording beyond the amender's spelling and grammar fixes (see Step 5).
 - Only the coordinator touches the `version` field, and only once per pass (Step 6). Unpublished reviews (not yet on main) stay at `1.0.0`.
 - Do not open a PR if no changes were made to the source file (i.e. no errors were found and no quotes were corrected). In that case, update the state registry and move on.
 - If any agent fails or produces unexpected output, stop and report the issue to the user rather than proceeding silently.
