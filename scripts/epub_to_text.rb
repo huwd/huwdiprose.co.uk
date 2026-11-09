@@ -19,7 +19,6 @@ require 'fileutils'
 require 'open3'
 require 'tmpdir'
 
-BLOCK_END = %r{</(?:p|h[1-6]|div|li|tr|blockquote|section|article)>}i
 HTML_FILE = /\.x?html?\z/i
 
 def usage_and_exit
@@ -32,15 +31,32 @@ def unzip(epub, into)
   abort "unzip failed: #{err}" unless status.success?
 end
 
+# Single pass over the markup: comments and tags are consumed as tokens and
+# never copied to the output, so only text content (and the newlines that
+# block-level tags imply) is kept. Content of <script> and <style> is dropped.
+TOKEN = /<!--.*?-->|<[^>]*>|[^<]+|</m
+BLOCK_TAG = /\A<\/?(?:p|h[1-6]|div|li|tr|blockquote|section|article)\b/i
+BREAK_TAG = /\A<br\b/i
+SKIP_OPEN = /\A<(script|style)\b/i
+SKIP_CLOSE = /\A<\/(script|style)\s*>/i
+
 def html_to_text(html)
-  text = html.dup
-  text.gsub!(/<!--.*?-->/m, '')
-  text.gsub!(%r{<(script|style)\b.*?</\1>}mi, '')
-  text.gsub!(BLOCK_END, "\n")
-  text.gsub!(%r{<br\s*/?>}i, "\n")
-  text.gsub!(/<[^>]+>/, '')
-  text.gsub!('&nbsp;', ' ')
-  CGI.unescapeHTML(text)
+  out = +''
+  skipping = false
+  html.scan(TOKEN) do |token|
+    if token.start_with?('<')
+      if skipping
+        skipping = false if token.match?(SKIP_CLOSE)
+      elsif token.match?(SKIP_OPEN) && !token.end_with?('/>')
+        skipping = true
+      elsif token.match?(BLOCK_TAG) && token.start_with?('</') || token.match?(BREAK_TAG)
+        out << "\n"
+      end
+    elsif !skipping
+      out << token
+    end
+  end
+  CGI.unescapeHTML(out.gsub('&nbsp;', ' '))
 end
 
 def chapter_name(path)
