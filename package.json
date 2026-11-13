@@ -15,7 +15,7 @@
     "postcss-load-config": "^6.0.1",
     "postcss-preset-env": "^11.6.2",
     "read-cache": "^1.0.2",
-    "sass": "^1.107.1",
-    "wrangler": "^4.156.0"
+    "sass": "^1.108.0",
+    "wrangler": "^4.158.0"
   }
 }
