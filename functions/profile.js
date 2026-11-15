@@ -2,6 +2,18 @@
 // person identifier is https://huwdiprose.co.uk/profile#me. See
 // docs/webid.md for the publication contract.
 //
+// Why a Function: readers dereference the WebID by requesting /profile
+// (the #me fragment is never sent) with Accept: text/turtle or
+// application/ld+json, and expect RDF back from that exact URL. Pages
+// static hosting picks files by path alone, so without this /profile
+// would always return HTML. _redirects and _headers match paths, not
+// request headers. Zone-level rules can match headers, but they can't
+// weigh q-values and belong to the shared Cloudflare config, not this
+// repo. Cloudflare's Vary support (Cache Rules) only caches the variants
+// an origin chooses; it doesn't choose. This Function is that origin.
+// It sends Vary: Accept on every response, errors included, so caches
+// keep the variants apart.
+//
 // File-based routing means this Function runs for /profile only; every
 // other URL on the site stays a plain static asset. Both variants are
 // built by Bridgetown from src/_data/webid.yml and fetched via
