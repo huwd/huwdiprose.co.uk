@@ -21,6 +21,11 @@ task :check_redirects, [:base_url] do |_, args|
   ruby "scripts/check_redirects.rb #{args[:base_url]}".strip
 end
 
+desc 'Check the WebID profile contract on a running site (defaults to wrangler pages dev on :8788)'
+task :check_webid, [:base_url] do |_, args|
+  ruby "scripts/check_webid.rb #{args[:base_url]}".strip
+end
+
 desc 'Build the site if missing, serve it locally (honouring _redirects), and run smoke + redirect checks'
 task :verify do
   # Deliberately shells out to the same commands `smoke_test`/`check_redirects`/
@@ -51,6 +56,8 @@ task :verify do
     wait_for_server(base_url, pid)
     sh 'ruby scripts/smoke_test.rb'
     sh "ruby scripts/check_redirects.rb #{base_url}"
+    sh 'ruby scripts/check_webid.rb --build output'
+    sh "ruby scripts/check_webid.rb #{base_url}"
   rescue StandardError
     warn "\n--- wrangler pages dev output ---\n#{File.read(log.path)}"
     raise
