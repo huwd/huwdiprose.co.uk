@@ -1,0 +1,51 @@
+// WebID profile page (src/profile.erb): label/value pairs in a <dl>.
+// Stacked on narrow screens, two columns once there's room.
+
+.webid-profile {
+	display: grid;
+	grid-template-columns: 1fr;
+	margin: 1.5rem 0;
+
+	dt {
+		font-weight: 600;
+		margin-top: 1rem;
+	}
+
+	dd {
+		margin: 0.25rem 0 0 0;
+		// The WebID is one long unbroken string.
+		overflow-wrap: anywhere;
+	}
+
+	dd ul {
+		margin-left: 0;
+		list-style: none;
+
+		> li {
+			margin-bottom: 0.25rem;
+		}
+	}
+
+	// Line the WebID up with the other values (code is padded sitewide).
+	.webid-person {
+		padding: 0;
+	}
+
+	.webid-image {
+		display: block;
+		border-radius: 0.5rem;
+	}
+}
+
+@media screen and (min-width: 40rem) {
+	.webid-profile {
+		grid-template-columns: 8rem 1fr;
+		column-gap: 1.5rem;
+		row-gap: 1rem;
+
+		dt,
+		dd {
+			margin: 0;
+		}
+	}
+}
