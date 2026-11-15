@@ -32,6 +32,10 @@ Bridgetown.configure do |config|
   # data, despite reading like site metadata.
   lang "en_GB"
 
+  # Bridgetown copies _redirects through by default, but not Cloudflare
+  # Pages' other underscore-prefixed control file.
+  include "_headers"
+
   # Custom collections, ported from Jekyll's _config.yml. :books and
   # :reviews intentionally share a permalink - book reviews and
   # multi-book reviews both publish under /review/book/.

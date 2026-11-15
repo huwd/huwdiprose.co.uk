@@ -23,6 +23,10 @@
   <link rel="alternate" type="application/atom+xml" title="<%= tag || title %>" href="<%= relative_url section_feed %>" />
   <% end %>
 
+  <% if resource.data.rdf_alternate %>
+  <link rel="alternate" type="text/turtle" href="<%= relative_url resource.data.rdf_alternate %>" />
+  <% end %>
+
   <link rel="icon" href="<%= relative_url "/favicon.ico" %>" sizes="any" />
   <link rel="icon" type="image/png" href="<%= relative_url "/favicon.png" %>" />
 
