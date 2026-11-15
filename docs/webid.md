@@ -32,7 +32,7 @@ The profile states only:
 - their name (`foaf:name`)
 - their homepage (`foaf:homepage`)
 - their avatar (`foaf:img`), which is the site favicon
-- their Bluesky, GitHub and Keybase accounts (`foaf:account`)
+- their Bluesky, X, GitHub and Keybase accounts (`foaf:account`)
 
 Vocabulary: [FOAF](http://xmlns.com/foaf/spec/).
 
