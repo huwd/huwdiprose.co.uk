@@ -21,6 +21,8 @@ image: https://huwdiprose.co.uk/favicon.png
 accounts:
   - label: Bluesky
     url: https://bsky.app/profile/huwdiprose.bsky.social
+  - label: X
+    url: https://x.com/huwdiprose
   - label: GitHub
     url: https://github.com/huwd
   - label: Keybase
