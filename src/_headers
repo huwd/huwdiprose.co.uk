@@ -1,0 +1,9 @@
+# Cloudflare Pages response headers for static assets. These do not apply
+# to Function responses - /profile sets its own in functions/profile.js.
+
+# Direct URL of the WebID profile's Turtle variant (see docs/webid.md).
+/profile.ttl
+  Content-Type: text/turtle; charset=utf-8
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=300
+  Link: </profile>; rel="canonical"

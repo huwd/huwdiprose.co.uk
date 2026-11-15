@@ -1,0 +1,38 @@
+---
+layout: page
+title: Profile
+permalink: /profile.html
+canonical_url: https://huwdiprose.co.uk/profile
+description: WebID profile for Huw Diprose, also available as Turtle.
+rdf_alternate: /profile.ttl
+---
+<% webid = site.data.webid %>
+<p>
+  This is the <a href="https://www.w3.org/2005/Incubator/webid/spec/identity/">WebID</a>
+  profile document for <%= webid.name %>. Linked-data clients requesting
+  <code>text/turtle</code> from this address get the same statements as RDF,
+  which is also available directly at <a href="/profile.ttl">/profile.ttl</a>.
+</p>
+
+<dl class="webid-profile">
+  <dt>WebID</dt>
+  <dd><code class="webid-person"><%= webid.person %></code></dd>
+
+  <dt>Name</dt>
+  <dd class="webid-name"><%= webid.name %></dd>
+
+  <dt>Avatar</dt>
+  <dd><img class="webid-image" src="<%= webid.image %>" alt="<%= webid.name %>" width="96" height="96"></dd>
+
+  <dt>Homepage</dt>
+  <dd><a class="webid-homepage" href="<%= webid.homepage %>"><%= webid.homepage %></a></dd>
+
+  <dt>Accounts</dt>
+  <dd>
+    <ul>
+      <% webid.accounts.each do |account| %>
+      <li><a class="webid-account" href="<%= account.url %>"><%= account.label %></a></li>
+      <% end %>
+    </ul>
+  </dd>
+</dl>

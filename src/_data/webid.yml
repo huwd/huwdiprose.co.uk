@@ -1,0 +1,27 @@
+# Public WebID profile - the single source for every representation of
+# https://huwdiprose.co.uk/profile (Turtle at /profile.ttl, HTML at
+# /profile, both negotiated by functions/profile.js). See docs/webid.md.
+#
+# `person` is a permanent identifier: tokens and access policies may come
+# to embed this exact string. Never change it, its host, path, trailing
+# slash or fragment. Keep it absolute - a relative <#me> in profile.ttl
+# would resolve to profile.ttl#me, not profile#me.
+#
+# Only add statements here that are true, public and backed by a real,
+# working resource. No placeholder issuers, storage or inboxes.
+
+person: https://huwdiprose.co.uk/profile#me
+document: https://huwdiprose.co.uk/profile
+name: Huw Diprose
+homepage: https://huwdiprose.co.uk/
+# Avatar, published as foaf:img. The site favicon doubles as it.
+image: https://huwdiprose.co.uk/favicon.png
+
+# Online accounts held by the person, published as foaf:account.
+accounts:
+  - label: Bluesky
+    url: https://bsky.app/profile/huwdiprose.bsky.social
+  - label: GitHub
+    url: https://github.com/huwd
+  - label: Keybase
+    url: https://keybase.io/huwdiprose

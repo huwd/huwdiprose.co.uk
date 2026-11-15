@@ -1,0 +1,25 @@
+---
+layout: none
+permalink: /profile.ttl
+sitemap: false
+---
+<% webid = site.data.webid -%>
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+# WebID profile document for <%= webid.name %>.
+# Generated from src/_data/webid.yml - edit that, not this output.
+
+<%= turtle_iri webid.document %>
+    a foaf:PersonalProfileDocument ;
+    foaf:maker <%= turtle_iri webid.person %> ;
+    foaf:primaryTopic <%= turtle_iri webid.person %> .
+
+<%= turtle_iri webid.person %>
+    a foaf:Person ;
+    foaf:name <%= turtle_string webid.name %> ;
+    foaf:homepage <%= turtle_iri webid.homepage %> ;
+    foaf:img <%= turtle_iri webid.image %> ;
+<% webid.accounts.each do |account| -%>
+    foaf:account <%= turtle_iri account.url %> ;
+<% end -%>
+    foaf:isPrimaryTopicOf <%= turtle_iri webid.document %> .
