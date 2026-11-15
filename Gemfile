@@ -20,3 +20,10 @@ gem "base64"
 # never actually installed - confirmed by an actual failed Pages build.
 gem "wikidata_adaptor"
 gem "dotenv"
+
+# Used by scripts/check_webid.rb to parse the WebID profile as real RDF
+# (same reason as above for not being in a :development/:test group).
+gem "rdf", "~> 3.3"
+gem "rdf-turtle", "~> 3.3"
+gem "rdf-isomorphic", "~> 3.3"
+gem "ostruct" # rdf requires it; leaves the default gems in Ruby 3.5
