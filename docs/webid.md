@@ -65,8 +65,8 @@ Every response from `/profile` includes:
 | File | Purpose |
 | --- | --- |
 | `src/_data/webid.yml` | The profile data. Edit this to change the profile. |
-| `src/profile.ttl.erb` | Builds `/profile.ttl` from the data |
-| `src/profile.erb` | Builds the HTML view from the same data |
+| `src/webid/profile.ttl.erb` | Builds `/profile.ttl` from the data |
+| `src/webid/profile.erb` | Builds the HTML view from the same data |
 | `plugins/builders/webid_helpers.rb` | Escapes IRIs and strings for Turtle |
 | `functions/profile.js` | Cloudflare Pages Function that negotiates `/profile` |
 | `src/_headers` | Headers for direct requests to `/profile.ttl` |

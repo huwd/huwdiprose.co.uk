@@ -1,5 +1,5 @@
 module Builders
-  # Turtle serialisation helpers for src/profile.ttl.erb. The profile is
+  # Turtle serialisation helpers for src/webid/profile.ttl.erb. The profile is
   # small enough to template by hand, but every IRI and literal still goes
   # through these so a stray quote or angle bracket in src/_data/webid.yml
   # can't produce invalid (or differently-meaning) Turtle.
