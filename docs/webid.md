@@ -77,11 +77,7 @@ Every response from `/profile` includes:
 
 Pages runs the Function for `/profile` only. The rest of the site stays static.
 
-### Why a Function
-
-Cloudflare Pages serves static files by path. It does not choose between files using the `Accept` header, and `_redirects` and `_headers` can only match on paths. So something has to run code to negotiate.
-
-Cloudflare's zone-level rules can match request headers, but they belong to the shared Cloudflare configuration rather than this repository. They also only match header text, so they cannot weigh q-values. A Pages Function keeps the negotiation in this repository, deploys and previews with the site, and runs only for `/profile`.
+Pages static hosting chooses files by path alone, so without the Function `/profile` would always return HTML and RDF readers could not dereference the WebID. The comment at the top of `functions/profile.js` explains why negotiation runs there rather than in Cloudflare configuration.
 
 ### Absolute IRIs
 
