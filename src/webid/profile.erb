@@ -3,15 +3,20 @@ layout: page
 title: Profile
 permalink: /profile.html
 canonical_url: https://huwdiprose.co.uk/profile
-description: WebID profile for Huw Diprose, also available as Turtle.
-rdf_alternate: /profile.ttl
+description: WebID profile for Huw Diprose, also available as Turtle and JSON-LD.
+rdf_alternates:
+  - type: text/turtle
+    href: /profile.ttl
+  - type: application/ld+json
+    href: /profile.jsonld
 ---
 <% webid = site.data.webid %>
 <p>
   This is the <a href="https://www.w3.org/2005/Incubator/webid/spec/identity/">WebID</a>
   profile document for <%= webid.name %>. Linked-data clients requesting
-  <code>text/turtle</code> from this address get the same statements as RDF,
-  which is also available directly at <a href="/profile.ttl">/profile.ttl</a>.
+  <code>text/turtle</code> or <code>application/ld+json</code> from this
+  address get the same statements as RDF. They are also available directly
+  as <a href="/profile.ttl">Turtle</a> and <a href="/profile.jsonld">JSON-LD</a>.
 </p>
 
 <dl class="webid-profile">

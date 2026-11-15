@@ -23,8 +23,8 @@
   <link rel="alternate" type="application/atom+xml" title="<%= tag || title %>" href="<%= relative_url section_feed %>" />
   <% end %>
 
-  <% if resource.data.rdf_alternate %>
-  <link rel="alternate" type="text/turtle" href="<%= relative_url resource.data.rdf_alternate %>" />
+  <% Array(resource.data.rdf_alternates).each do |alternate| %>
+  <link rel="alternate" type="<%= alternate["type"] %>" href="<%= relative_url alternate["href"] %>" />
   <% end %>
 
   <link rel="icon" href="<%= relative_url "/favicon.ico" %>" sizes="any" />
