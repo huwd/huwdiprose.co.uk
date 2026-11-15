@@ -7,11 +7,13 @@
 # custom domain. The person IRI is always the production one from
 # src/_data/webid.yml, whatever host is being checked: the RDF must
 # describe https://huwdiprose.co.uk/profile#me even when it's served from
-# localhost or a preview URL. So the Turtle is parsed against the host
+# localhost or a preview URL. So the RDF is parsed against the host
 # actually fetched, which makes any relative IRI in it fail this check
 # rather than quietly resolving to the right answer in production only.
 #
-# Reader: the Ruby `rdf` + `rdf-turtle` gems (versions printed on run).
+# Reader: the Ruby `rdf`, `rdf-turtle` and `json-ld` gems (versions
+# printed on run). JSON-LD is parsed without loading remote documents,
+# so the inline context is the only one it can use.
 
 require 'yaml'
 require 'net/http'
@@ -19,6 +21,7 @@ require 'uri'
 require 'rdf'
 require 'rdf/turtle'
 require 'rdf/isomorphic'
+require 'json/ld'
 
 MODEL = YAML.safe_load_file('src/_data/webid.yml')
 PERSON = RDF::URI(MODEL.fetch('person'))
@@ -27,6 +30,7 @@ FOAF = RDF::Vocabulary.new('http://xmlns.com/foaf/0.1/')
 
 BROWSER_ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'.freeze
 TURTLE_ACCEPT = 'text/turtle'.freeze
+JSONLD_ACCEPT = 'application/ld+json'.freeze
 
 $failures = 0
 
@@ -41,6 +45,20 @@ end
 
 def parse_turtle(body, base_uri)
   RDF::Graph.new << RDF::Turtle::Reader.new(body, base_uri: base_uri, validate: true)
+end
+
+NO_REMOTE_DOCUMENTS = lambda do |url, **|
+  raise JSON::LD::JsonLdError::LoadingDocumentFailed, "refusing to load remote document #{url}"
+end
+
+# Parsed to a Hash first: given a string, the reader routes the input
+# document itself through the loader, which would trip the block above.
+def parse_jsonld(body, base_uri)
+  RDF::Graph.new.tap do |graph|
+    JSON::LD::API.toRdf(JSON.parse(body), base: base_uri, documentLoader: NO_REMOTE_DOCUMENTS) do |statement|
+      graph << statement
+    end
+  end
 end
 
 # The statements src/_data/webid.yml says the profile makes - nothing more.
@@ -85,6 +103,9 @@ def html_checks(html, label)
   check("#{label}: advertises the Turtle alternate") do
     html.include?('<link rel="alternate" type="text/turtle" href="/profile.ttl" />')
   end
+  check("#{label}: advertises the JSON-LD alternate") do
+    html.include?('<link rel="alternate" type="application/ld+json" href="/profile.jsonld" />')
+  end
   check("#{label}: canonical is the document URL") do
     html.include?(%(<link rel="canonical" href="#{DOCUMENT}" />))
   end
@@ -93,7 +114,11 @@ end
 def build_mode(dir)
   puts "Build output: #{dir}"
   ttl = File.read(File.join(dir, 'profile.ttl'))
-  graph_checks(parse_turtle(ttl, 'https://build.invalid/profile.ttl'), 'profile.ttl')
+  turtle = parse_turtle(ttl, 'https://build.invalid/profile.ttl')
+  graph_checks(turtle, 'profile.ttl')
+  jsonld = parse_jsonld(File.read(File.join(dir, 'profile.jsonld')), 'https://build.invalid/profile.jsonld')
+  graph_checks(jsonld, 'profile.jsonld')
+  check('profile.jsonld and profile.ttl are the same graph') { jsonld.isomorphic_with?(turtle) }
   html_checks(File.read(File.join(dir, 'profile.html')), 'profile.html')
   check('_headers ships with the build') { File.exist?(File.join(dir, '_headers')) }
   check('functions/profile.js exists') { File.exist?('functions/profile.js') }
@@ -147,8 +172,14 @@ def http_mode(base)
   graph_checks(parse_turtle(response.body, final.to_s), 'Accept: text/turtle')
   check('Turtle response carries no login/challenge cookies') { response.get_fields('set-cookie').nil? }
 
-  [['no Accept header', nil], ['Accept: */*', '*/*'], ['Accept: application/ld+json (unsupported)', 'application/ld+json'],
-   ['Accept: text/turtle;q=0.9, text/html;q=0.5', 'text/turtle;q=0.9, text/html;q=0.5']].each do |label, accept|
+  jsonld_response, jsonld_final, jsonld_hops = fetch(doc, accept: JSONLD_ACCEPT)
+  check('JSON-LD request to /profile is served without redirects') { jsonld_hops.empty? }
+  negotiated_checks(jsonld_response, 'Accept: application/ld+json', 'application/ld+json')
+  graph_checks(parse_jsonld(jsonld_response.body, jsonld_final.to_s), 'Accept: application/ld+json')
+
+  [['no Accept header', nil], ['Accept: */*', '*/*'], ['Accept: application/rdf+xml (unsupported)', 'application/rdf+xml'],
+   ['Accept: text/turtle;q=0.9, text/html;q=0.5', 'text/turtle;q=0.9, text/html;q=0.5'],
+   ['Accept: application/ld+json, text/turtle (tie)', 'application/ld+json, text/turtle']].each do |label, accept|
     r = request(URI(doc), accept: accept)
     check("#{label}: gets Turtle") { r.code == '200' && r['content-type'].to_s.start_with?('text/turtle') }
     check("#{label}: Vary includes Accept") { r['vary'].to_s.downcase.include?('accept') }
@@ -159,11 +190,20 @@ def http_mode(base)
   html_checks(html_response.body, 'browser Accept')
   weighted = request(URI(doc), accept: 'text/turtle;q=0.5, text/html')
   check('Accept: text/turtle;q=0.5, text/html prefers HTML') { weighted['content-type'].to_s.start_with?('text/html') }
+  weighted_jsonld = request(URI(doc), accept: 'text/turtle;q=0.5, application/ld+json')
+  check('Accept: text/turtle;q=0.5, application/ld+json prefers JSON-LD') do
+    weighted_jsonld['content-type'].to_s.start_with?('application/ld+json')
+  end
 
   static, = fetch("#{base}/profile.ttl", accept: '*/*')
   negotiated_checks(static, '/profile.ttl', 'text/turtle', negotiated: false)
   check('/profile.ttl is the same graph as negotiated /profile') do
     parse_turtle(static.body, "#{base}/profile.ttl").isomorphic_with?(parse_turtle(response.body, final.to_s))
+  end
+  static_jsonld, = fetch("#{base}/profile.jsonld", accept: '*/*')
+  negotiated_checks(static_jsonld, '/profile.jsonld', 'application/ld+json', negotiated: false)
+  check('/profile.jsonld is the same graph as negotiated Turtle') do
+    parse_jsonld(static_jsonld.body, "#{base}/profile.jsonld").isomorphic_with?(parse_turtle(response.body, final.to_s))
   end
 
   avatar = request(URI("#{base}#{URI(MODEL['image']).path}"), accept: 'image/*')
@@ -182,7 +222,7 @@ def http_mode(base)
   check('CORS preflight (OPTIONS) succeeds') { %w[200 204].include?(options.code) && options['access-control-allow-origin'] == '*' }
 end
 
-puts "Reader: rdf #{RDF::VERSION}, rdf-turtle #{RDF::Turtle::VERSION}"
+puts "Reader: rdf #{RDF::VERSION}, rdf-turtle #{RDF::Turtle::VERSION}, json-ld #{JSON::LD::VERSION}"
 if ARGV[0] == '--build'
   build_mode(ARGV[1] || 'output')
 else

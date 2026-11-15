@@ -11,7 +11,7 @@ This is basic WebID publication only. It does not provide login, a Solid Pod, or
 | Person identifier (the WebID) | `https://huwdiprose.co.uk/profile#me` |
 | Profile document | `https://huwdiprose.co.uk/profile` |
 | Required format | Turtle (`text/turtle`) |
-| Other formats | HTML, for people reading in a browser |
+| Other formats | JSON-LD (`application/ld+json`), and HTML for people reading in a browser |
 | Source of truth | `src/_data/webid.yml` in this repository |
 | Update policy | Changes are made through Git and deployed with the site |
 
@@ -43,22 +43,24 @@ Only publish statements that are true, public and backed by a working resource. 
 | Request | Response |
 | --- | --- |
 | `GET /profile` asking for `text/turtle` | Turtle |
+| `GET /profile` asking for `application/ld+json` | JSON-LD |
 | `GET /profile` from a browser (prefers `text/html`) | HTML |
 | `GET /profile` with no `Accept` header, `*/*`, or only unsupported types | Turtle |
 | `GET /profile.ttl` | Turtle, without negotiation |
+| `GET /profile.jsonld` | JSON-LD, without negotiation |
 | `GET /profile/` | 301 redirect to `/profile` |
 | `GET /profile.html` | 308 redirect to `/profile` (Cloudflare Pages default) |
 | `OPTIONS /profile` | 204 with CORS headers |
 | Any other method | 405 |
 
-Turtle is the format the WebID spec requires, so it wins ties and is the fallback. A request that names only formats the site does not offer, such as `application/ld+json`, gets Turtle rather than a 406 error. Each format takes the q-value of the most specific matching `Accept` range, as set out in RFC 9110.
+Each format takes the q-value of the most specific matching `Accept` range, as set out in RFC 9110, and the highest wins. Turtle is the format the WebID spec requires, so it wins ties and is the fallback. A request that names only formats the site does not offer, such as `application/rdf+xml`, gets Turtle rather than a 406 error. JSON-LD is there for readers following the Solid WebID Profile draft, which may ask for either Turtle or JSON-LD.
 
 Every response from `/profile` includes:
 
 - `Vary: Accept`
 - `Access-Control-Allow-Origin: *`
 - `Cache-Control: public, max-age=300`, so changes appear within 5 minutes
-- a `Link` header giving the canonical URL and the Turtle alternate
+- a `Link` header giving the canonical URL and the Turtle and JSON-LD alternates
 
 ### Files
 
@@ -66,15 +68,24 @@ Every response from `/profile` includes:
 | --- | --- |
 | `src/_data/webid.yml` | The profile data. Edit this to change the profile. |
 | `src/webid/profile.ttl.erb` | Builds `/profile.ttl` from the data |
+| `src/webid/profile.jsonld.erb` | Builds `/profile.jsonld` from the same data |
 | `src/webid/profile.erb` | Builds the HTML view from the same data |
-| `plugins/builders/webid_helpers.rb` | Escapes IRIs and strings for Turtle |
+| `plugins/builders/webid_helpers.rb` | Validates IRIs, escapes Turtle strings and builds the JSON-LD |
 | `functions/profile.js` | Cloudflare Pages Function that negotiates `/profile` |
-| `src/_headers` | Headers for direct requests to `/profile.ttl` |
+| `src/_headers` | Headers for direct requests to `/profile.ttl` and `/profile.jsonld` |
 | `scripts/check_webid.rb` | Checks the contract |
 
 Pages runs the Function for `/profile` only. The rest of the site stays static.
 
-The Turtle uses absolute IRIs throughout. A relative `<#me>` inside `profile.ttl` would identify `profile.ttl#me`, not `/profile#me`.
+### Why a Function
+
+Cloudflare Pages serves static files by path. It does not choose between files using the `Accept` header, and `_redirects` and `_headers` can only match on paths. So something has to run code to negotiate.
+
+Cloudflare's zone-level rules can match request headers, but they belong to the shared Cloudflare configuration rather than this repository. They also only match header text, so they cannot weigh q-values. A Pages Function keeps the negotiation in this repository, deploys and previews with the site, and runs only for `/profile`.
+
+### Absolute IRIs
+
+Both RDF files use absolute IRIs throughout. A relative `<#me>` inside `profile.ttl` would identify `profile.ttl#me`, not `/profile#me`. The JSON-LD context is inline, so readers need no second request to interpret it.
 
 ## Checking it
 
@@ -86,23 +97,22 @@ To check a Pages preview or the live site:
 bundle exec rake "check_webid[https://huwdiprose.co.uk]"
 ```
 
-The checks parse the Turtle with the Ruby `rdf` and `rdf-turtle` gems, which are the named reader for this milestone. They confirm that:
+The checks parse the RDF with the Ruby `rdf`, `rdf-turtle` and `json-ld` gems, which are the named reader for this milestone. JSON-LD is parsed with remote document loading refused, so a remote context fails the check. The checks confirm that:
 
 - the graph describes exactly `https://huwdiprose.co.uk/profile#me`
 - the graph matches `src/_data/webid.yml`, with no extra or missing statements
 - the HTML view shows the same identifier and statements
-- `/profile` and `/profile.ttl` return the same graph
+- the Turtle and JSON-LD, negotiated or fetched directly, are all the same graph
 - status codes, content types, `Vary`, CORS, cache lifetime and redirects are correct
 - each `Accept` case gets the right format
 - no cookie or login is needed
 
-The Turtle is parsed against the URL actually fetched. A relative identifier would then resolve to the wrong host on a preview or localhost, and the checks would fail, rather than passing only in production.
+The RDF is parsed against the URL actually fetched. A relative identifier would then resolve to the wrong host on a preview or localhost, and the checks would fail, rather than passing only in production.
 
 ## What this does not cover
 
 - **Login.** The profile has no `solid:oidcIssuer`. Add one only after an issuer has been shown to authenticate this exact WebID. Pocket ID at `auth.huwdiprose.co.uk` is not a Solid-OIDC issuer just because it supports OpenID Connect.
 - **Full Solid WebID Profile.** The [Solid WebID Profile draft](https://solid.github.io/webid-profile/) (January 2026) requires a `foaf:Agent` type and exactly one `pim:preferencesFile`. This profile has neither, so it is a WebID profile but not a conforming Solid one.
 - **Writable profiles.** The profile changes only through Git. Solid apps that expect to edit the profile will not be able to.
-- **JSON-LD.** Solid readers may ask for `application/ld+json`. They currently get Turtle. Adding JSON-LD would mean generating it from the same data and checking it agrees.
 
 Related: [issue 262](https://github.com/huwd/huwdiprose.co.uk/issues/262) and the broader content negotiation experiment in [issue 261](https://github.com/huwd/huwdiprose.co.uk/issues/261).

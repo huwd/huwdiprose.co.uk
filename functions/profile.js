@@ -9,10 +9,12 @@
 //
 // Selection: each variant takes the q-value of the most specific Accept
 // range that matches it (RFC 9110 section 12.5.1). The highest q wins.
-// Turtle - the one format the WebID spec requires - wins ties, and is
-// also the fallback when the header is missing, a bare */*, or names
-// only formats we don't offer. A browser's Accept lists text/html
-// explicitly and */* at a lower q, so it gets HTML.
+// Ties go to the earlier variant below, so Turtle - the one format the
+// WebID spec requires - wins them. Turtle is also the fallback when the
+// header is missing, a bare */*, or names only formats we don't offer.
+// JSON-LD is for readers following the Solid WebID Profile draft, which
+// may ask for text/turtle or application/ld+json. A browser's Accept
+// lists text/html explicitly and */* at a lower q, so it gets HTML.
 //
 // Headers are set here, not in _headers: Pages doesn't apply _headers to
 // Function responses.
@@ -20,6 +22,7 @@
 const VARIANTS = [
   // Listed in tie-break order.
   { type: 'text/turtle', asset: '/profile.ttl', contentType: 'text/turtle; charset=utf-8' },
+  { type: 'application/ld+json', asset: '/profile.jsonld', contentType: 'application/ld+json; charset=utf-8' },
   { type: 'text/html', asset: '/profile', contentType: 'text/html; charset=utf-8' },
 ];
 
@@ -82,7 +85,12 @@ function commonHeaders(headers) {
   headers.set('Access-Control-Allow-Origin', '*');
   headers.set('Access-Control-Expose-Headers', 'Content-Type, Link, Vary, ETag');
   // set, not append: the asset response already carries _headers' Link.
-  headers.set('Link', '</profile>; rel="canonical", </profile.ttl>; rel="alternate"; type="text/turtle"');
+  headers.set(
+    'Link',
+    '</profile>; rel="canonical", ' +
+      '</profile.ttl>; rel="alternate"; type="text/turtle", ' +
+      '</profile.jsonld>; rel="alternate"; type="application/ld+json"',
+  );
   return headers;
 }
 

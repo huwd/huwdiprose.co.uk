@@ -21,9 +21,11 @@ gem "base64"
 gem "wikidata_adaptor"
 gem "dotenv"
 
-# Used by scripts/check_webid.rb to parse the WebID profile as real RDF
+# Used by scripts/check_webid.rb to parse the WebID profile (Turtle and
+# JSON-LD) as real RDF
 # (same reason as above for not being in a :development/:test group).
 gem "rdf", "~> 3.3"
 gem "rdf-turtle", "~> 3.3"
 gem "rdf-isomorphic", "~> 3.3"
+gem "json-ld", "~> 3.3"
 gem "ostruct" # rdf requires it; leaves the default gems in Ruby 3.5
