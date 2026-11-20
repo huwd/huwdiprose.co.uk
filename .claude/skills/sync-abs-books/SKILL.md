@@ -16,15 +16,20 @@ before anything ships.
 
 The script reads its Audiobookshelf credentials (`AUDIOBOOKSTORE_*`) from the
 environment, and they only exist through `with-secrets`. Run every script
-command below through it, as shown. This needs the user's approval, and you
-must never print the variables or their values.
+command below through it, as shown, injecting only those three variables
+with `--only`. This needs the user's approval, and you must never print the
+variables or their values. Warnings `with-secrets` prints on stderr, such as
+there being no project secrets file, are harmless. If the script fails with
+a `KeyError` naming an `AUDIOBOOKSTORE_*` variable, stop and tell the user
+that variable is missing from their secrets.
 
 ## Step 1 — Dry run
 
 Always preview before writing:
 
 ```bash
-with-secrets bundle exec ruby scripts/sync_abs_books.rb --finished
+with-secrets --only AUDIOBOOKSTORE_HOST_LAN,AUDIOBOOKSTORE_JWT_TOKEN,AUDIOBOOKSTORE_LIBRARY_ID \
+  bundle exec ruby scripts/sync_abs_books.rb --finished
 ```
 
 This defaults the "finished" cutoff to the most recent `date_finished` already
@@ -59,7 +64,8 @@ item ID to `IGNORE_IDS` in the script, or the finish date to
 ## Step 3 — Write
 
 ```bash
-with-secrets bundle exec ruby scripts/sync_abs_books.rb --finished --write
+with-secrets --only AUDIOBOOKSTORE_HOST_LAN,AUDIOBOOKSTORE_JWT_TOKEN,AUDIOBOOKSTORE_LIBRARY_ID \
+  bundle exec ruby scripts/sync_abs_books.rb --finished --write
 ```
 
 If the auto cutoff advanced past a pending patch on a re-run (e.g. because a
