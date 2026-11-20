@@ -1,6 +1,6 @@
 ---
 name: coordinator
-version: 1.4.0
+version: 1.5.0
 description: Orchestrates the full editorial pipeline across the post and book archive. Maintains a state registry of which files have been reviewed, picks the next unreviewed file, commissions each agent in turn, reviews the output, and opens a pull request. Use this to run a single end-to-end editorial review pass, or to work through the entire archive systematically.
 tools: Read, Write, Edit, Glob, Grep, Bash, Agent
 ---
@@ -70,6 +70,8 @@ Several reviews are often batched into one shared "review update" branch and PR.
 git checkout -b fix/{short}-editorial-review
 ```
 
+When you name a new branch, or the user asks you to, check the name can be pushed: a branch named `reviews` exists on the remote, so git refuses any `reviews/<name>` branch ("directory file conflict"). Use a flat name such as `reviews-{short}`. Check with `git ls-remote --heads origin` if unsure.
+
 Never commit to `main`. Never pick up a non-`main` branch on your own initiative: only stay on one the user named or confirmed.
 
 Commit only the reviewed file, and nothing else, in every commit. If the working tree has changes to any file other than the reviewed one when you start, stop and tell the user. The reviewed file itself is often uncommitted: that is the author's draft.
@@ -87,12 +89,22 @@ Before any stage runs, copy the source file to `.tmp/{slug}/{version}/draft.md`.
 
 ### Frontmatter pre-flight
 
-Before the first stage, read the frontmatter of a `_books/` file and report (do not fix) anything missing or wrong:
+Before the first stage, read the frontmatter of a `_books/` file and check:
 
 - `categories` should be `review book` (a synced stub has `book`).
-- `date` should be set, and is the review date, not `date_finished`.
+- `date` should be set, and is the review date (today, when the review is being written), not `date_finished`.
+- `work_iri` should be a complete Wikidata IRI (`Q` followed by digits). If it is an empty placeholder (`https://www.wikidata.org/wiki/Q`), search Wikidata for the work:
 
-Include these in the final report's "Action required". Do not edit `work_iri` or `edition_iri` at any point; if `edition_iri` is an empty placeholder, just note it.
+  ```bash
+  curl -s -A "book-iri-lookup/1.0" -G "https://www.wikidata.org/w/api.php" \
+    --data-urlencode action=wbsearchentities --data-urlencode "search={title}" \
+    --data-urlencode language=en --data-urlencode limit=10 --data-urlencode format=json
+  ```
+
+  Propose an item only if its description matches the book: the same author, and a book or literary work rather than a film, track or disambiguation page. Give its Q-id with the evidence (description, author, publication date). If nothing matches, say so: new work items are made by the author's own Wikidata flow, not by you.
+- `edition_iri`: never look one up or invent one. Audiobook editions are almost never on Wikidata, and a hardcover edition's IRI is not the audiobook's. If it is an empty placeholder, just note it.
+
+Never write any of these yourself. In author-choice mode, put each fix in the decision sheet's frontmatter group, with the exact value you would set. In direct mode, list them under the report's "Action required".
 
 Run the following agents in order against the chosen file, each as a separate sub-agent invoked with the Agent tool. If you cannot invoke sub-agents, stop and tell the user. Do NOT perform a stage's work yourself inline: that silently skips what the stage agent is for (for example, the book-verifier's bookstore lookup). Between each step, read the output and confirm it looks reasonable before proceeding to the next. Commit source file changes after each stage that modifies the file, following the commit standards below.
 
@@ -310,7 +322,7 @@ Ask the user: "Would you like to continue to the next file?" If yes, repeat the 
 ## Important
 
 - Never commit directly to main. Always work on a branch.
-- Commit only the reviewed file. Do not touch `work_iri` or `edition_iri`, and do not edit a `_books/` review's wording except to apply options the author picked (author-choice mode) or the amender's spelling and grammar fixes (direct mode).
+- Commit only the reviewed file. Do not touch `work_iri` or `edition_iri` unless the author picks a value you proposed in the pre-flight, and do not edit a `_books/` review's wording except to apply options the author picked (author-choice mode) or the amender's spelling and grammar fixes (direct mode).
 - Only the coordinator touches the `version` field, and only once per pass (Step 6). Unpublished reviews (not yet on main) stay at `1.0.0`.
 - Do not open a PR if no changes were made to the source file (i.e. no errors were found and no quotes were corrected). In that case, update the state registry and move on.
 - If any agent fails or produces unexpected output, stop and report the issue to the user rather than proceeding silently.
