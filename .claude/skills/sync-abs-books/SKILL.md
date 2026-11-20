@@ -14,12 +14,17 @@ The script itself never needs an LLM: it just talks to the ABS API and writes
 frontmatter. Your job is to run it, then act as the human-in-the-loop check
 before anything ships.
 
+The script reads its Audiobookshelf credentials (`AUDIOBOOKSTORE_*`) from the
+environment, and they only exist through `with-secrets`. Run every script
+command below through it, as shown. This needs the user's approval, and you
+must never print the variables or their values.
+
 ## Step 1 — Dry run
 
 Always preview before writing:
 
 ```bash
-bundle exec ruby scripts/sync_abs_books.rb --finished
+with-secrets bundle exec ruby scripts/sync_abs_books.rb --finished
 ```
 
 This defaults the "finished" cutoff to the most recent `date_finished` already
@@ -54,7 +59,7 @@ item ID to `IGNORE_IDS` in the script, or the finish date to
 ## Step 3 — Write
 
 ```bash
-bundle exec ruby scripts/sync_abs_books.rb --finished --write
+with-secrets bundle exec ruby scripts/sync_abs_books.rb --finished --write
 ```
 
 If the auto cutoff advanced past a pending patch on a re-run (e.g. because a
@@ -145,7 +150,7 @@ Return the PR URL. Do not push or open a PR without explicit confirmation.
 
 ## Notes
 
-- Requires `AUDIOBOOKSTORE_HOST_LAN`, `AUDIOBOOKSTORE_JWT_TOKEN`, `AUDIOBOOKSTORE_LIBRARY_ID` in `.env`
+- Requires `AUDIOBOOKSTORE_HOST_LAN`, `AUDIOBOOKSTORE_JWT_TOKEN`, `AUDIOBOOKSTORE_LIBRARY_ID`, available only through `with-secrets`
   (`scripts/support/helpers.rb` loads dotenv automatically).
 - `work_iri`/`edition_iri` are written as placeholder `https://www.wikidata.org/wiki/Q`
   — backfilling those is a separate step, covered by the `wikidata-books` skill.

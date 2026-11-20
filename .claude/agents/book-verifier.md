@@ -62,22 +62,30 @@ Before falling back to asking the user, always attempt to retrieve the EPUB from
 The endpoint and credentials are in environment variables — never hardcode them, and never write the endpoint or its path into any output, commit or PR:
 
 ```bash
-BOOKSTORE_SEARCH_URL   # the library's search endpoint; a `q` query parameter is added to it
+BOOKSTORE_HOST   # the library's OPDS root, no trailing slash; search is "$BOOKSTORE_HOST/catalog"
 BOOKSTORE_USER
 BOOKSTORE_PASSWORD
 ```
 
-If `BOOKSTORE_SEARCH_URL` is not set, stop and tell the user rather than guessing an address.
+These variables are never in your normal shell: they only exist inside `with-secrets`. Check they are set from inside it, without printing values:
+
+```bash
+with-secrets sh -c 'for v in BOOKSTORE_HOST BOOKSTORE_USER BOOKSTORE_PASSWORD; do [ -n "$(printenv "$v")" ] || echo "$v missing"; done'
+```
+
+If any is missing, stop and tell the user which one rather than guessing an address.
+
+Run every `curl` below as `with-secrets sh -c '...'` with single quotes, so the variables expand inside `with-secrets` and not in your own shell, where they are empty.
 
 **Step 1 — Search the library for the book:**
 
 ```bash
 curl -s -G -u "$BOOKSTORE_USER:$BOOKSTORE_PASSWORD" \
   --data-urlencode "q={title words}" \
-  "$BOOKSTORE_SEARCH_URL"
+  "$BOOKSTORE_HOST/catalog"
 ```
 
-The credentials are only available through `with-secrets` (e.g. `with-secrets sh -c 'curl ...'`). Never print them. The response should be an XML feed. If a request returns an HTML page instead, the URL is wrong: stop and ask the user to check `BOOKSTORE_SEARCH_URL`.
+The credentials are only available through `with-secrets` (e.g. `with-secrets sh -c 'curl ...'`). Never print them. The response should be an XML feed. If a request returns an HTML page instead, the URL is wrong: stop and ask the user to check `BOOKSTORE_HOST`.
 
 The `q` search matches words in the title, so use one or two distinctive words (e.g. `Nerd`, not the full subtitle) and check the entry's title and author yourself. Zero `<entry>` elements means the book is not in the library.
 
@@ -93,7 +101,7 @@ Use the `href` from the entry exactly as given for the download; do not construc
 
 ```bash
 curl -s -u "$BOOKSTORE_USER:$BOOKSTORE_PASSWORD" \
-  "{href from the link, made absolute against the origin of $BOOKSTORE_SEARCH_URL if it starts with /}" \
+  "{href from the link, made absolute against the origin of $BOOKSTORE_HOST if it starts with /}" \
   -o /tmp/epub-verify/book.epub
 ```
 
