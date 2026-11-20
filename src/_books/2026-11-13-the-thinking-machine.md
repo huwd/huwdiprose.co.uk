@@ -3,7 +3,7 @@ layout: book
 title: The Thinking Machine
 authors:
 - Stephen Witt
-work_iri: https://www.wikidata.org/wiki/Q
+work_iri: https://www.wikidata.org/wiki/Q137557468
 edition_iri: https://www.wikidata.org/wiki/Q
 categories: review book
 date: 2026-11-20
