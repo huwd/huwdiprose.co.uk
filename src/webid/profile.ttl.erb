@@ -17,12 +17,13 @@ sitemap: false
     foaf:primaryTopic <%= turtle_iri webid.person %> .
 
 <%= turtle_iri webid.person %>
-    a foaf:Person ;
+    a foaf:Person, foaf:Agent ;
     foaf:name <%= turtle_string webid.name %> ;
     foaf:homepage <%= turtle_iri webid.homepage %> ;
     foaf:img <%= turtle_iri webid.image %> ;
     solid:oidcIssuer <%= turtle_iri webid.oidc_issuer %> ;
     pim:storage <%= turtle_iri webid.storage %> ;
+    pim:preferencesFile <%= turtle_iri webid.preferences_file %> ;
 <% webid.accounts.each do |account| -%>
     foaf:account <%= turtle_iri account.url %> ;
 <% end -%>

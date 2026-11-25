@@ -2,7 +2,7 @@
 
 This site publishes a public [WebID](https://www.w3.org/2005/Incubator/webid/spec/identity/) for Huw Diprose. A WebID is a URL that identifies a person. Software can fetch it to get machine-readable statements about that person.
 
-The profile names a Solid-OIDC issuer for logging in, and a Solid Pod for storage. Neither is run from this repository, and the profile is not a full Solid WebID Profile. See [what this does not cover](#what-this-does-not-cover).
+The profile names a Solid-OIDC issuer for logging in, and a Solid Pod for storage. Neither is run from this repository, and it names a private preferences file in the Pod, as the Solid WebID Profile draft requires. See [what this does not cover](#what-this-does-not-cover).
 
 ## Publication contract
 
@@ -28,12 +28,13 @@ The WebID spec's main example is `https://bob.example.org/profile#me`, and `#me`
 The profile states only:
 
 - the document is a `foaf:PersonalProfileDocument`, made by and about the person
-- the person is a `foaf:Person`
+- the person is a `foaf:Person` and a `foaf:Agent`
 - their name (`foaf:name`)
 - their homepage (`foaf:homepage`)
 - their avatar (`foaf:img`), which is the site favicon
 - their Solid-OIDC issuer (`solid:oidcIssuer`)
 - their Solid Pod (`pim:storage`)
+- their preferences file in the Pod (`pim:preferencesFile`), which only they can read
 - their Bluesky, X, GitHub and Keybase accounts (`foaf:account`)
 
 Vocabularies: [FOAF](http://xmlns.com/foaf/spec/), [Solid terms](http://www.w3.org/ns/solid/terms) and [PIM space](http://www.w3.org/ns/pim/space).
@@ -104,14 +105,15 @@ The checks parse the RDF with the Ruby `rdf`, `rdf-turtle` and `json-ld` gems, w
 - status codes, content types, `Vary`, CORS, cache lifetime and redirects are correct
 - each `Accept` case gets the right format
 - no cookie or login is needed
+- the preferences file refuses anonymous reads with a `401` (HTTP checks only). The Pod gives the same `401` for a file that doesn't exist, so this doesn't prove the file is there.
 
 The RDF is parsed against the URL actually fetched. A relative identifier would then resolve to the wrong host on a preview or localhost, and the checks would fail, rather than passing only in production.
 
 ## What this does not cover
 
 - **Login beyond one issuer.** The profile names one `solid:oidcIssuer`, `https://id.huwdiprose.co.uk`: a self-hosted instance of the [Solid-OIDC broker](https://github.com/huwd/solid-oidc). It was added once the broker had authenticated this exact WebID. Pocket ID at `auth.huwdiprose.co.uk` is not a Solid-OIDC issuer itself: the broker signs people in through it, then issues the Solid tokens.
-- **Storage beyond the Pod root.** The profile names one `pim:storage`, `https://pod.huwdiprose.co.uk/`: a self-hosted [Community Solid Server](https://communitysolidserver.github.io/CommunitySolidServer/) whose root is the storage. Its access rules give this WebID, and nobody else, Read, Write and Control, and it accepts logins from the issuer above. It runs outside this repository. The profile names no `pim:preferencesFile`, `ldp:inbox` or `solid:publicTypeIndex`: each needs a real resource in the Pod first.
-- **Full Solid WebID Profile.** The [Solid WebID Profile draft](https://solid.github.io/webid-profile/) (January 2026) requires a `foaf:Agent` type and exactly one `pim:preferencesFile`. This profile has neither, so it is a WebID profile but not a conforming Solid one.
+- **Storage beyond the Pod root.** The profile names one `pim:storage`, `https://pod.huwdiprose.co.uk/`: a self-hosted [Community Solid Server](https://communitysolidserver.github.io/CommunitySolidServer/) whose root is the storage. Its access rules give this WebID, and nobody else, Read, Write and Control, and it accepts logins from the issuer above. It runs outside this repository. Apart from the preferences file, the profile names nothing in the Pod: no `ldp:inbox` or `solid:publicTypeIndex`. Each needs a real resource in the Pod first.
+- **Optional Solid WebID Profile features.** The [Solid WebID Profile draft](https://solid.github.io/webid-profile/) (January 2026) requires a `foaf:Agent` type and exactly one `pim:preferencesFile`, and the profile has both. The preferences file is `https://pod.huwdiprose.co.uk/settings/prefs.ttl`, readable only by this WebID. `check_webid.rb` checks that it refuses anonymous reads, but that can't show it exists: confirm that by reading it as the owner after any change to the Pod. The profile has no type indexes or extended profile documents.
 - **Writable profiles.** The profile changes only through Git. Solid apps that expect to edit the profile will not be able to.
 
 Related: [issue 262](https://github.com/huwd/huwdiprose.co.uk/issues/262) and the broader content negotiation experiment in [issue 261](https://github.com/huwd/huwdiprose.co.uk/issues/261).

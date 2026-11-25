@@ -26,6 +26,12 @@ oidc_issuer: https://id.huwdiprose.co.uk
 # Never change it: it is in every resource URL in the Pod. Keep the
 # trailing slash.
 storage: https://pod.huwdiprose.co.uk/
+# Preferences file in the Pod, published as pim:preferencesFile. Apps keep
+# private settings there. It must exist and be readable only by this
+# WebID. An anonymous request gets 401, but so does a missing file, so
+# check it exists by reading it as the owner.
+# Never change it: apps store data at this URL.
+preferences_file: https://pod.huwdiprose.co.uk/settings/prefs.ttl
 
 # Avatar, published as foaf:img. The site favicon doubles as it.
 image: https://huwdiprose.co.uk/favicon.png
