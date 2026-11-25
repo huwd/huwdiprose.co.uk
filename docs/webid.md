@@ -107,7 +107,7 @@ The RDF is parsed against the URL actually fetched. A relative identifier would 
 
 ## What this does not cover
 
-- **Login.** The profile has no `solid:oidcIssuer`. Add one only after an issuer has been shown to authenticate this exact WebID. Pocket ID at `auth.huwdiprose.co.uk` is not a Solid-OIDC issuer just because it supports OpenID Connect.
+- **Login beyond one issuer.** The profile names one `solid:oidcIssuer`, `https://id.huwdiprose.co.uk`: a self-hosted instance of the [Solid-OIDC broker](https://github.com/huwd/solid-oidc). It was added once the broker had authenticated this exact WebID. Pocket ID at `auth.huwdiprose.co.uk` is not a Solid-OIDC issuer itself: the broker signs people in through it, then issues the Solid tokens.
 - **Full Solid WebID Profile.** The [Solid WebID Profile draft](https://solid.github.io/webid-profile/) (January 2026) requires a `foaf:Agent` type and exactly one `pim:preferencesFile`. This profile has neither, so it is a WebID profile but not a conforming Solid one.
 - **Writable profiles.** The profile changes only through Git. Solid apps that expect to edit the profile will not be able to.
 

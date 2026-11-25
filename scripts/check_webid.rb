@@ -27,6 +27,7 @@ MODEL = YAML.safe_load_file('src/_data/webid.yml')
 PERSON = RDF::URI(MODEL.fetch('person'))
 DOCUMENT = RDF::URI(MODEL.fetch('document'))
 FOAF = RDF::Vocabulary.new('http://xmlns.com/foaf/0.1/')
+SOLID = RDF::Vocabulary.new('http://www.w3.org/ns/solid/terms#')
 
 BROWSER_ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'.freeze
 TURTLE_ACCEPT = 'text/turtle'.freeze
@@ -71,6 +72,7 @@ def expected_graph
     g << [PERSON, FOAF.name, RDF::Literal(MODEL.fetch('name'))]
     g << [PERSON, FOAF.homepage, RDF::URI(MODEL.fetch('homepage'))]
     g << [PERSON, FOAF.img, RDF::URI(MODEL.fetch('image'))]
+    g << [PERSON, SOLID.oidcIssuer, RDF::URI(MODEL.fetch('oidc_issuer'))]
     g << [PERSON, FOAF.isPrimaryTopicOf, DOCUMENT]
     MODEL.fetch('accounts').each { |a| g << [PERSON, FOAF.account, RDF::URI(a.fetch('url'))] }
   end
@@ -97,6 +99,9 @@ def html_checks(html, label)
   check("#{label}: shows the name") { html.include?(%(<dd class="webid-name">#{MODEL['name']}</dd>)) }
   check("#{label}: shows the avatar") { html.include?(%(class="webid-image" src="#{MODEL['image']}")) }
   check("#{label}: links the homepage") { html.include?(%(class="webid-homepage" href="#{MODEL['homepage']}")) }
+  check("#{label}: shows the Solid login issuer") do
+    html.include?(%(<code class="webid-oidc-issuer">#{MODEL['oidc_issuer']}</code>))
+  end
   MODEL['accounts'].each do |a|
     check("#{label}: links #{a['label']}") { html.include?(%(class="webid-account" href="#{a['url']}")) }
   end

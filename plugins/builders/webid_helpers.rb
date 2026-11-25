@@ -10,6 +10,7 @@ module Builders
     # Characters Turtle forbids inside an IRIREF.
     IRI_FORBIDDEN = /[\x00-\x20<>"{}|^`\\]/
     FOAF = "http://xmlns.com/foaf/0.1/".freeze
+    SOLID = "http://www.w3.org/ns/solid/terms#".freeze
 
     def build
       helper "turtle_iri" do |iri|
@@ -49,6 +50,7 @@ module Builders
       {
         "@context" => {
           "foaf" => FOAF,
+          "solid" => SOLID,
           "name" => "foaf:name",
           "maker" => iri_term.("maker"),
           "primaryTopic" => iri_term.("primaryTopic"),
@@ -56,6 +58,7 @@ module Builders
           "homepage" => iri_term.("homepage"),
           "img" => iri_term.("img"),
           "account" => iri_term.("account").merge("@container" => "@set"),
+          "oidcIssuer" => { "@id" => "solid:oidcIssuer", "@type" => "@id" },
         },
         "@graph" => [
           {
@@ -70,6 +73,7 @@ module Builders
             "name" => webid.name.to_s,
             "homepage" => absolute_iri!(webid.homepage),
             "img" => absolute_iri!(webid.image),
+            "oidcIssuer" => absolute_iri!(webid.oidc_issuer),
             "account" => webid.accounts.map { |account| absolute_iri!(account.url) },
             "isPrimaryTopicOf" => document,
           },

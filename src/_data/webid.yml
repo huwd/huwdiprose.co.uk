@@ -14,6 +14,13 @@ person: https://huwdiprose.co.uk/profile#me
 document: https://huwdiprose.co.uk/profile
 name: Huw Diprose
 homepage: https://huwdiprose.co.uk/
+# Solid-OIDC issuer, published as solid:oidcIssuer. Solid servers accept a
+# login for this WebID only from this issuer. It is a self-hosted
+# Solid-OIDC broker (github.com/huwd/solid-oidc), which signs people in
+# through Pocket ID.
+# Like `person`, never change it: it is in every token the issuer signs.
+oidc_issuer: https://id.huwdiprose.co.uk
+
 # Avatar, published as foaf:img. The site favicon doubles as it.
 image: https://huwdiprose.co.uk/favicon.png
 
