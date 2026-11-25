@@ -235,6 +235,11 @@ def http_mode(base)
 
   options = request(URI(doc), method: Net::HTTP::Options)
   check('CORS preflight (OPTIONS) succeeds') { %w[200 204].include?(options.code) && options['access-control-allow-origin'] == '*' }
+  # Logged-in Solid apps send Authorization and DPoP with every request.
+  # Browsers block the read unless the preflight lists both: a wildcard
+  # never covers Authorization.
+  allowed = options['access-control-allow-headers'].to_s.split(/,\s*/).map(&:downcase)
+  check('CORS preflight allows Authorization and DPoP') { (%w[authorization dpop] - allowed).empty? }
 
   # The preferences file is in the Pod, whatever host is being checked. It
   # must be private: anonymous readers get 401. The Pod gives the same 401
