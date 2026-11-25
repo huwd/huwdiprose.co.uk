@@ -113,6 +113,24 @@ The checks parse the RDF with the Ruby `rdf`, `rdf-turtle` and `json-ld` gems, w
 
 The RDF is parsed against the URL actually fetched. A relative identifier would then resolve to the wrong host on a preview or localhost, and the checks would fail, rather than passing only in production.
 
+## Login test
+
+On 25 November 2026, a Solid app in the browser signed in with this WebID and used the Pod:
+
+| Part | Version |
+| --- | --- |
+| App | [Penny](https://penny.vincenttunru.com/), client ID `https://penny.vincenttunru.com/clientid.json` |
+| Browser | Firefox 160.0.1 |
+| Issuer | `https://id.huwdiprose.co.uk`, Solid-OIDC broker `0.1` |
+| Upstream login | Pocket ID 2.19.3 at `auth.huwdiprose.co.uk` |
+| Pod | Community Solid Server 7.3.0 at `https://pod.huwdiprose.co.uk/` |
+
+Penny was given the issuer, logged in through Pocket ID, and asked for consent on the broker's page, which named `https://huwdiprose.co.uk/profile#me`. It then read the profile, found the Pod through `pim:storage`, and read and wrote resources there. The Pod logged each request as verified for exactly this WebID, through Penny, from this issuer.
+
+Another WebID is refused. In the same app, a test account from another provider, `https://refusal-test.solidcommunity.net/profile/card#me` with issuer `https://solidcommunity.net/`, requested `/settings/prefs.ttl`. The Pod verified that WebID, then refused it because it has no read permissions, and Penny showed "You do not have permission to view this Resource". Anonymous requests get `401`.
+
+The first attempt failed after login: the CORS preflight for `/profile` didn't allow `Authorization` and `DPoP`, so Penny couldn't read the profile. `check_webid.rb` now checks for both headers.
+
 ## What this does not cover
 
 - **Login beyond one issuer.** The profile names one `solid:oidcIssuer`, `https://id.huwdiprose.co.uk`: a self-hosted instance of the [Solid-OIDC broker](https://github.com/huwd/solid-oidc). It was added once the broker had authenticated this exact WebID. Pocket ID at `auth.huwdiprose.co.uk` is not a Solid-OIDC issuer itself: the broker signs people in through it, then issues the Solid tokens.
