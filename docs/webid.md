@@ -53,7 +53,7 @@ Only publish statements that are true, public and backed by a working resource. 
 | `GET /profile.jsonld` | JSON-LD, without negotiation |
 | `GET /profile/` | 301 redirect to `/profile` |
 | `GET /profile.html` | 308 redirect to `/profile` (Cloudflare Pages default) |
-| `OPTIONS /profile` | 204 with CORS headers |
+| `OPTIONS /profile` | 204 with CORS headers, allowing the `Accept`, `Authorization` and `DPoP` request headers |
 | Any other method | 405 |
 
 Each format takes the q-value of the most specific matching `Accept` range, as set out in RFC 9110, and the highest wins. Turtle is the format the WebID spec requires, so it wins ties and is the fallback. A request that names only formats the site does not offer, such as `application/rdf+xml`, gets Turtle rather than a 406 error. JSON-LD is there for readers following the Solid WebID Profile draft, which may ask for either Turtle or JSON-LD.
@@ -64,6 +64,10 @@ Every response from `/profile` includes:
 - `Access-Control-Allow-Origin: *`
 - `Cache-Control: public, max-age=300`, so changes appear within 5 minutes
 - a `Link` header giving the canonical URL and the Turtle and JSON-LD alternates
+
+Solid apps that are logged in send their access token with every request, including the profile read that finds the Pod. That adds `Authorization` and `DPoP` headers, so the browser asks first with a CORS preflight. The preflight for `/profile` allows both. `Access-Control-Allow-Origin` can stay `*`, because these requests carry no cookies.
+
+Only `/profile` answers preflights. Cloudflare Pages serves `/profile.ttl` and `/profile.jsonld` as static files and returns `405` to `OPTIONS`, so a logged-in app can't read them directly. Apps should read the WebID document, `/profile`, anyway.
 
 ### Files
 
@@ -102,7 +106,7 @@ The checks parse the RDF with the Ruby `rdf`, `rdf-turtle` and `json-ld` gems, w
 - the graph matches `src/_data/webid.yml`, with no extra or missing statements
 - the HTML view shows the same identifier and statements
 - the Turtle and JSON-LD, negotiated or fetched directly, are all the same graph
-- status codes, content types, `Vary`, CORS, cache lifetime and redirects are correct
+- status codes, content types, `Vary`, CORS (including a preflight that allows `Authorization` and `DPoP`), cache lifetime and redirects are correct
 - each `Accept` case gets the right format
 - no cookie or login is needed
 - the preferences file refuses anonymous reads with a `401` (HTTP checks only). The Pod gives the same `401` for a file that doesn't exist, so this doesn't prove the file is there.

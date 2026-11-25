@@ -122,7 +122,10 @@ export async function onRequest({ request, env }) {
   if (method === 'OPTIONS') {
     const headers = commonHeaders(new Headers());
     headers.set('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
-    headers.set('Access-Control-Allow-Headers', 'Accept');
+    // Logged-in Solid apps send their access token on every request,
+    // including the profile read that finds the Pod, so the preflight must
+    // allow Authorization and DPoP. Origin stays '*': no cookies are used.
+    headers.set('Access-Control-Allow-Headers', 'Accept, Authorization, DPoP');
     headers.set('Access-Control-Max-Age', '86400');
     return new Response(null, { status: 204, headers });
   }
