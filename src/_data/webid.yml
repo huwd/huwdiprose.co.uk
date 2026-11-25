@@ -20,6 +20,12 @@ homepage: https://huwdiprose.co.uk/
 # through Pocket ID.
 # Like `person`, never change it: it is in every token the issuer signs.
 oidc_issuer: https://id.huwdiprose.co.uk
+# Solid Pod, published as pim:storage. Solid apps read it to find where to
+# read and write this person's data. It is a Community Solid Server whose
+# root is the storage; only this WebID has access.
+# Never change it: it is in every resource URL in the Pod. Keep the
+# trailing slash.
+storage: https://pod.huwdiprose.co.uk/
 
 # Avatar, published as foaf:img. The site favicon doubles as it.
 image: https://huwdiprose.co.uk/favicon.png
