@@ -70,11 +70,13 @@ def expected_graph
     g << [DOCUMENT, FOAF.maker, PERSON]
     g << [DOCUMENT, FOAF.primaryTopic, PERSON]
     g << [PERSON, RDF.type, FOAF.Person]
+    g << [PERSON, RDF.type, FOAF.Agent]
     g << [PERSON, FOAF.name, RDF::Literal(MODEL.fetch('name'))]
     g << [PERSON, FOAF.homepage, RDF::URI(MODEL.fetch('homepage'))]
     g << [PERSON, FOAF.img, RDF::URI(MODEL.fetch('image'))]
     g << [PERSON, SOLID.oidcIssuer, RDF::URI(MODEL.fetch('oidc_issuer'))]
     g << [PERSON, PIM.storage, RDF::URI(MODEL.fetch('storage'))]
+    g << [PERSON, PIM.preferencesFile, RDF::URI(MODEL.fetch('preferences_file'))]
     g << [PERSON, FOAF.isPrimaryTopicOf, DOCUMENT]
     MODEL.fetch('accounts').each { |a| g << [PERSON, FOAF.account, RDF::URI(a.fetch('url'))] }
   end
@@ -106,6 +108,9 @@ def html_checks(html, label)
   end
   check("#{label}: shows the Solid Pod") do
     html.include?(%(<code class="webid-storage">#{MODEL['storage']}</code>))
+  end
+  check("#{label}: shows the preferences file") do
+    html.include?(%(<code class="webid-preferences-file">#{MODEL['preferences_file']}</code>))
   end
   MODEL['accounts'].each do |a|
     check("#{label}: links #{a['label']}") { html.include?(%(class="webid-account" href="#{a['url']}")) }
@@ -230,6 +235,13 @@ def http_mode(base)
 
   options = request(URI(doc), method: Net::HTTP::Options)
   check('CORS preflight (OPTIONS) succeeds') { %w[200 204].include?(options.code) && options['access-control-allow-origin'] == '*' }
+
+  # The preferences file is in the Pod, whatever host is being checked. It
+  # must be private: anonymous readers get 401. The Pod gives the same 401
+  # for a file that doesn't exist, so this can't prove the file is there -
+  # only a read as the owner can.
+  prefs = request(URI(MODEL['preferences_file']), accept: TURTLE_ACCEPT)
+  check('preferences file refuses anonymous reads (401)') { prefs.code == '401' }
 end
 
 puts "Reader: rdf #{RDF::VERSION}, rdf-turtle #{RDF::Turtle::VERSION}, json-ld #{JSON::LD::VERSION}"

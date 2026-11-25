@@ -62,6 +62,7 @@ module Builders
           "account" => iri_term.("account").merge("@container" => "@set"),
           "oidcIssuer" => { "@id" => "solid:oidcIssuer", "@type" => "@id" },
           "storage" => { "@id" => "pim:storage", "@type" => "@id" },
+          "preferencesFile" => { "@id" => "pim:preferencesFile", "@type" => "@id" },
         },
         "@graph" => [
           {
@@ -72,12 +73,13 @@ module Builders
           },
           {
             "@id" => person,
-            "@type" => "foaf:Person",
+            "@type" => ["foaf:Person", "foaf:Agent"],
             "name" => webid.name.to_s,
             "homepage" => absolute_iri!(webid.homepage),
             "img" => absolute_iri!(webid.image),
             "oidcIssuer" => absolute_iri!(webid.oidc_issuer),
             "storage" => absolute_iri!(webid.storage),
+            "preferencesFile" => absolute_iri!(webid.preferences_file),
             "account" => webid.accounts.map { |account| absolute_iri!(account.url) },
             "isPrimaryTopicOf" => document,
           },
