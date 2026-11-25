@@ -11,6 +11,7 @@ module Builders
     IRI_FORBIDDEN = /[\x00-\x20<>"{}|^`\\]/
     FOAF = "http://xmlns.com/foaf/0.1/".freeze
     SOLID = "http://www.w3.org/ns/solid/terms#".freeze
+    PIM = "http://www.w3.org/ns/pim/space#".freeze
 
     def build
       helper "turtle_iri" do |iri|
@@ -51,6 +52,7 @@ module Builders
         "@context" => {
           "foaf" => FOAF,
           "solid" => SOLID,
+          "pim" => PIM,
           "name" => "foaf:name",
           "maker" => iri_term.("maker"),
           "primaryTopic" => iri_term.("primaryTopic"),
@@ -59,6 +61,7 @@ module Builders
           "img" => iri_term.("img"),
           "account" => iri_term.("account").merge("@container" => "@set"),
           "oidcIssuer" => { "@id" => "solid:oidcIssuer", "@type" => "@id" },
+          "storage" => { "@id" => "pim:storage", "@type" => "@id" },
         },
         "@graph" => [
           {
@@ -74,6 +77,7 @@ module Builders
             "homepage" => absolute_iri!(webid.homepage),
             "img" => absolute_iri!(webid.image),
             "oidcIssuer" => absolute_iri!(webid.oidc_issuer),
+            "storage" => absolute_iri!(webid.storage),
             "account" => webid.accounts.map { |account| absolute_iri!(account.url) },
             "isPrimaryTopicOf" => document,
           },

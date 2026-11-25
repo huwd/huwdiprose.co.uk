@@ -5,6 +5,7 @@ sitemap: false
 ---
 <% webid = site.data.webid -%>
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix pim: <http://www.w3.org/ns/pim/space#> .
 @prefix solid: <http://www.w3.org/ns/solid/terms#> .
 
 # WebID profile document for <%= webid.name %>.
@@ -21,6 +22,7 @@ sitemap: false
     foaf:homepage <%= turtle_iri webid.homepage %> ;
     foaf:img <%= turtle_iri webid.image %> ;
     solid:oidcIssuer <%= turtle_iri webid.oidc_issuer %> ;
+    pim:storage <%= turtle_iri webid.storage %> ;
 <% webid.accounts.each do |account| -%>
     foaf:account <%= turtle_iri account.url %> ;
 <% end -%>

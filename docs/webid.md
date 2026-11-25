@@ -2,7 +2,7 @@
 
 This site publishes a public [WebID](https://www.w3.org/2005/Incubator/webid/spec/identity/) for Huw Diprose. A WebID is a URL that identifies a person. Software can fetch it to get machine-readable statements about that person.
 
-This is basic WebID publication only. It does not provide login, a Solid Pod, or a full Solid WebID Profile. See [what this does not cover](#what-this-does-not-cover).
+The profile names a Solid-OIDC issuer for logging in, and a Solid Pod for storage. Neither is run from this repository, and the profile is not a full Solid WebID Profile. See [what this does not cover](#what-this-does-not-cover).
 
 ## Publication contract
 
@@ -32,9 +32,11 @@ The profile states only:
 - their name (`foaf:name`)
 - their homepage (`foaf:homepage`)
 - their avatar (`foaf:img`), which is the site favicon
+- their Solid-OIDC issuer (`solid:oidcIssuer`)
+- their Solid Pod (`pim:storage`)
 - their Bluesky, X, GitHub and Keybase accounts (`foaf:account`)
 
-Vocabulary: [FOAF](http://xmlns.com/foaf/spec/).
+Vocabularies: [FOAF](http://xmlns.com/foaf/spec/), [Solid terms](http://www.w3.org/ns/solid/terms) and [PIM space](http://www.w3.org/ns/pim/space).
 
 Only publish statements that are true, public and backed by a working resource. Do not add an email address. Do not add placeholder issuers, storage, inboxes or preferences files to make the profile look like a complete Solid deployment.
 
@@ -108,6 +110,7 @@ The RDF is parsed against the URL actually fetched. A relative identifier would 
 ## What this does not cover
 
 - **Login beyond one issuer.** The profile names one `solid:oidcIssuer`, `https://id.huwdiprose.co.uk`: a self-hosted instance of the [Solid-OIDC broker](https://github.com/huwd/solid-oidc). It was added once the broker had authenticated this exact WebID. Pocket ID at `auth.huwdiprose.co.uk` is not a Solid-OIDC issuer itself: the broker signs people in through it, then issues the Solid tokens.
+- **Storage beyond the Pod root.** The profile names one `pim:storage`, `https://pod.huwdiprose.co.uk/`: a self-hosted [Community Solid Server](https://communitysolidserver.github.io/CommunitySolidServer/) whose root is the storage. Its access rules give this WebID, and nobody else, Read, Write and Control, and it accepts logins from the issuer above. It runs outside this repository. The profile names no `pim:preferencesFile`, `ldp:inbox` or `solid:publicTypeIndex`: each needs a real resource in the Pod first.
 - **Full Solid WebID Profile.** The [Solid WebID Profile draft](https://solid.github.io/webid-profile/) (January 2026) requires a `foaf:Agent` type and exactly one `pim:preferencesFile`. This profile has neither, so it is a WebID profile but not a conforming Solid one.
 - **Writable profiles.** The profile changes only through Git. Solid apps that expect to edit the profile will not be able to.
 
